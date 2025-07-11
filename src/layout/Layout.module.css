@@ -1,0 +1,5 @@
+.outlet-container {
+    padding-top: 64px;
+    padding-left: 50px;
+    min-height: calc(100vh - 64px);
+}

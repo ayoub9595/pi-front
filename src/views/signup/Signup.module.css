@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.subcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.logo {
+    display: flex;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+    border-radius: 20px;
+    padding: 30px 50px;
+}
+.input {
+    height: 35px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.button {
+    cursor: pointer;
+    height: 35px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: lightblue;
+}
