@@ -1,7 +1,8 @@
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { loginUser } from "../../service/LoginService.js";
+import { loginUser } from "../../service/AuthenticationService.js";
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-   // adapte le chemin selon l'organisation
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,8 +18,7 @@ const Login = () => {
         try {
             const data = await loginUser({email, motDePasse});
             localStorage.setItem("access_token", data.access_token);
-            console.log("Connexion OK, je redirige...");
-            navigate("/home");
+            navigate("/home/equipements");
         } catch (err) {
             setError(err.message);
         }
@@ -64,7 +64,6 @@ const Login = () => {
 
                     {error && <p style={{ color: "red" }}>{error}</p>}
 
-                    {/* 👇 Tu m'as dit de NE PAS toucher cette ligne */}
                     <span>Tu n'as pas encore de compte ? Inscris-toi <Link to="/signup">ici</Link></span>
                 </form>
             </div>

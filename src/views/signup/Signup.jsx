@@ -1,7 +1,8 @@
 import styles from "../signup/Signup.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signupUser } from "../../service/SignupService.js";
+import { signupUser } from "../../service/AuthenticationService.js";
+
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -39,7 +40,8 @@ const Signup = () => {
             });
 
             localStorage.setItem("access_token", data.access_token);
-            navigate("/home");
+            navigate("/home/equipements");
+
         } catch (err) {
             setError(err.message);
         }
@@ -87,7 +89,6 @@ const Signup = () => {
 
                     {error && <p style={{ color: "red" }}>{error}</p>}
 
-                    {/* 👇 Tu m'as dit de NE PAS toucher cette ligne */}
                     <span>Tu as déjà un compte ? Connecte-toi <Link to="/">ici</Link></span>
                 </form>
             </div>
