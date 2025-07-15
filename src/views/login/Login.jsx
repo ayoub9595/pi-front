@@ -3,11 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser } from "../../service/AuthenticationService.js";
 
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
 
 
     const handleSubmit = async (e) => {

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupUser } from "../../service/AuthenticationService.js";
 
+
 const Signup = () => {
     const [formData, setFormData] = useState({
         nom: "",
@@ -40,6 +41,7 @@ const Signup = () => {
 
             localStorage.setItem("access_token", data.access_token);
             navigate("/home/equipements");
+
         } catch (err) {
             setError(err.message);
         }
