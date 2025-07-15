@@ -71,11 +71,11 @@ textarea.input {
     align-items: center;
 }
 .caracteristique {
- display: flex;
- justify-content: center;
- align-items: flex-end;
- gap: 8px;
- margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .caracteristique-section {
