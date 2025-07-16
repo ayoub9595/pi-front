@@ -17,6 +17,7 @@ const Login = () => {
 
         try {
             const data = await loginUser({email, motDePasse});
+            console.log("Login response:", data);
             localStorage.setItem("access_token", data.access_token);
             navigate("/home/equipements");
         } catch (err) {

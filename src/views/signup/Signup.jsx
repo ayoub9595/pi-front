@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupUser } from "../../service/AuthenticationService.js";
 
-
 const Signup = () => {
     const [formData, setFormData] = useState({
         nom: "",
@@ -37,6 +36,7 @@ const Signup = () => {
                 cin: formData.cin,
                 telephone: formData.telephone,
                 motDePasse: formData.motDePasse,
+                role: formData.role,  // Envoi du rôle
             });
 
             localStorage.setItem("access_token", data.access_token);
@@ -84,6 +84,7 @@ const Signup = () => {
 
                     <label>Confirmation du mot de passe:</label>
                     <input className={styles.input} type="password" name="confirmMotDePasse" value={formData.confirmMotDePasse} onChange={handleChange} required />
+
 
                     <button className={styles.button} type="submit">S'inscrire</button>
 
