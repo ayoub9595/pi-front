@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
-import { getEquipments } from "../../service/equipmentService.js";
+import { getEquipments, deleteEquipment } from "../../service/equipmentService.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./EquipmentList.module.css";
 import EditIcon from "../../components/icons/EditIcon.js";
 import DeleteIcon from "../../components/icons/DeleteIcon.js";
+import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
+
 
 const EquipmentsList = () => {
     const [equipments, setEquipments] = useState([]);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            setTimeout(() => navigate("/"), 100);
+        }
         fetchAllEquipments();
     }, []);
 
@@ -26,24 +34,46 @@ const EquipmentsList = () => {
     const handleUpdate = (id) => {
         navigate(`/home/equipements/edit/${id}`);
     };
-
-    const handleDelete = async (id) => {
-        // if (window.confirm("Voulez-vous vraiment supprimer cet équipement ?")) {
-        //     try {
-        //         await deleteEquipment(id);
-        //         fetchEquipments();
-        //     } catch (err) {
-        //         setError("Erreur lors de la suppression de l’équipement");
-        //     }
-        // }
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowConfirm(true)
+    }
+    const confirmDelete = async () => {
+        try {
+            await deleteEquipment(selectedId);
+            setShowConfirm(false);
+            setEquipments(prev => {
+                const newEquipments = [...prev];
+                const index = newEquipments.findIndex(equipment => equipment.id === selectedId);
+                if (index > -1) {
+                    newEquipments.splice(index, 1);
+                }
+                return newEquipments;
+            })
+            setSelectedId(null);
+        } catch (err) {
+            setError("Erreur lors de la suppression de l’équipement");
+        }
     };
 
+    const cancelDelete = () => {
+        setShowConfirm(false);
+        setSelectedId(null);
+    };
     return (
         equipments.length > 0 ? (
                 <div className={styles["table-container"]}>
+                    {showConfirm && <ConfirmModal
+                        message="Voulez-vous supprimer cet equipement ?"
+                        handleConfirm={confirmDelete}
+                        handleCancel={cancelDelete}
+                    />
+                    }
                     <div className={styles.header}>
                         <h2>Liste des Équipements</h2>
-                        <button className={styles['add-button']} onClick={() => navigate('/home')}>➕</button>
+                        <div>
+                            <button className={styles['add-button']} onClick={() => navigate('/home')}>➕</button>
+                        </div>
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
 

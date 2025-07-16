@@ -20,8 +20,9 @@ const AddEquipment = () => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
+
     const handleInputChange = (e) => {
-        const {name, value, type, checked} = e.target;
+        const { name, value, type, checked } = e.target;
         setEquipment({
             ...equipment,
             [name]: type === "checkbox" ? checked : value,
@@ -29,14 +30,14 @@ const AddEquipment = () => {
     };
 
     const handleCaracChange = (index, e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         const updated = [...caracteristiques];
         updated[index][name] = value;
         setCaracteristiques(updated);
     };
 
     const addCaracField = () => {
-        setCaracteristiques([...caracteristiques, {caracteristique: "", valeur: ""}]);
+        setCaracteristiques([...caracteristiques, { caracteristique: "", valeur: "" }]);
     };
 
     const removeCaracField = (index) => {
@@ -50,9 +51,10 @@ const AddEquipment = () => {
 
         const fullData = {
             ...equipment,
-            caracteristiques: caracteristiques.filter(c => c.caracteristique.trim() && c.valeur.trim()),
+            caracteristiques: caracteristiques.filter(
+                (c) => c.caracteristique.trim() && c.valeur.trim()
+            ),
         };
-
 
         try {
             await createEquipment(fullData);
@@ -112,17 +114,21 @@ const AddEquipment = () => {
                         name="est_actif"
                     />
                 </label>
-                <div className={styles['caracteristiques-headers']}>
+
+                <div className={styles["caracteristiques-headers"]}>
                     <h4>Caractéristiques</h4>
-                    <button type="button"
-                            onClick={addCaracField}
-                            className={`${styles.button} ${styles['add-caracteristique']}`}>
+                    <button
+                        type="button"
+                        onClick={addCaracField}
+                        className={`${styles.button} ${styles["add-caracteristique"]}`}
+                    >
                         ➕
                     </button>
                 </div>
+
                 {caracteristiques.map((carac, index) => (
-                    <div key={index} className={styles.caracteristique} >
-                        <div className={styles['caracteristique-section']}>
+                    <div key={index} className={styles.caracteristique}>
+                        <div className={styles["caracteristique-section"]}>
                             <label>Nom:</label>
                             <input
                                 className={styles.input}
@@ -130,7 +136,7 @@ const AddEquipment = () => {
                                 onChange={(e) => handleCaracChange(index, e)}
                             />
                         </div>
-                        <div className={styles['caracteristique-section']}>
+                        <div className={styles["caracteristique-section"]}>
                             <label>Valeur:</label>
                             <input
                                 className={styles.input}
@@ -138,9 +144,13 @@ const AddEquipment = () => {
                                 onChange={(e) => handleCaracChange(index, e)}
                             />
                         </div>
-                            <button type="button" onClick={() => removeCaracField(index)} className={styles.button}>
-                                <DeleteIcon />
-                            </button>
+                        <button
+                            type="button"
+                            onClick={() => removeCaracField(index)}
+                            className={styles.button}
+                        >
+                            <DeleteIcon />
+                        </button>
                     </div>
                 ))}
 
@@ -148,11 +158,11 @@ const AddEquipment = () => {
                     Enregistrer
                 </button>
 
-                {success && <p style={{color: "green"}}>{success}</p>}
-                {error && <p style={{color: "red"}}>{error}</p>}
+                {success && <p style={{ color: "green" }}>{success}</p>}
+                {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
         </>
     );
-}
+};
 
 export default AddEquipment;
