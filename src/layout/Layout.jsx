@@ -3,7 +3,7 @@ import Backdrop from "../components/backdrop/Backdrop";
 import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
-import styles from './Layout.module.css'; // Create this file
+import styles from './Layout.module.css';
 
 const Layout = () => {
     const [show, handleSetShow] = useState(false);

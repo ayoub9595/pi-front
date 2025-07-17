@@ -1,8 +1,8 @@
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {jwtDecode} from "jwt-decode";
 import { loginUser } from "../../service/AuthenticationService.js";
-
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,21 +10,29 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const data = await loginUser({email, motDePasse});
-            console.log("Login response:", data);
-            localStorage.setItem("access_token", data.access_token);
-            navigate("/home/equipements");
+            const data = await loginUser({ email, motDePasse });
+
+            const token = data.access_token;
+            localStorage.setItem("access_token", token);
+
+            const decoded = jwtDecode(token);
+            const role = decoded?.role?.toUpperCase();
+
+            if (role === "ADMIN") {
+                navigate("/home/equipements");
+            } else if (role === "UTILISATEUR") {
+                navigate("/home/dashboard");
+            } else {
+                setError("Rôle inconnu, accès refusé");
+            }
         } catch (err) {
             setError(err.message);
         }
     };
-
 
     return (
         <div className={styles.container}>
