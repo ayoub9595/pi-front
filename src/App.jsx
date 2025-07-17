@@ -5,19 +5,36 @@ import Layout from "./layout/Layout.jsx";
 import AddEquipment from "./views/addEquipment/AddEquipment.jsx";
 import EquipmentsList from "./views/equipmentList/EquipmentsList.jsx";
 import EditEquipment from "./views/editEquipment/EditEquipment.jsx";
-
+import Dashboard from "./views/dashboard/Dashboard.jsx";
+import PrivateRoute from "./routerUtils/PrivateRoutes.jsx";
+import PublicRoute from "./routerUtils/PublicRoutes.jsx";
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-
-                <Route path="/home" element={<Layout />}>
-                    <Route index element={<AddEquipment />} />
+                <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
+                <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+                <Route
+                    path="/home"
+                    element={
+                        <PrivateRoute requiredRole="ADMIN">
+                            <Layout />
+                        </PrivateRoute>
+                    }
+                >
                     <Route path="equipements" element={<EquipmentsList />} />
-                    <Route path="/home/equipements/edit/:id" element={<EditEquipment />} />
+                    <Route path="equipements/edit/:id" element={<EditEquipment />} />
+                    <Route index element={<AddEquipment />} />
                 </Route>
+
+                <Route
+                    path="/home/dashboard"
+                    element={
+                        <PrivateRoute requiredRole="UTILISATEUR">
+                            <Dashboard />
+                        </PrivateRoute>
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );
