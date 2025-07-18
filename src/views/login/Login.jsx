@@ -1,14 +1,17 @@
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { loginUser } from "../../service/AuthenticationService.js";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../store/authSlice.js";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,8 +22,10 @@ const Login = () => {
             const token = data.access_token;
             localStorage.setItem("access_token", token);
 
-            const decoded = jwtDecode(token);
-            const role = decoded?.role?.toUpperCase();
+            const {sub,email: userEmail,role} = jwtDecode(token);
+
+
+            dispatch(setCredentials({ id:sub,email:userEmail, role }));
 
             if (role === "ADMIN") {
                 navigate("/home/equipements");
@@ -30,7 +35,7 @@ const Login = () => {
                 setError("Rôle inconnu, accès refusé");
             }
         } catch (err) {
-            setError(err.message);
+            setError(err.message || "Une erreur est survenue");
         }
     };
 
@@ -43,7 +48,7 @@ const Login = () => {
                         src="https://avatars.githubusercontent.com/u/2487851?s=280&v=4"
                         height="200px"
                         width="200px"
-                        alt=""
+                        alt="Logo"
                     />
                     <div>
                         <h1>Bienvenue sur</h1>
