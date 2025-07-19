@@ -31,6 +31,7 @@ const App = () => {
                     path="/home/dashboard"
                     element={
                         <PrivateRoute requiredRole="UTILISATEUR">
+                            <Layout />
                             <Dashboard />
                         </PrivateRoute>
                     }

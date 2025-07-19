@@ -5,25 +5,105 @@
     left: 0;
     height: 94vh;
     width: 30vw;
-    background: lightcoral;
     margin-top: 7vh;
-    background-color: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
     border-right: 1px solid rgba(229, 231, 235, 0.8);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
     transform: translateX(-100%);
-    transition: all .3s ease-in;
+    transition: all 0.3s ease-in-out;
     opacity: 0;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    overflow-y: auto;
 }
+
 .show-sidebar {
     transform: translateX(0);
     opacity: 1;
 }
+
+.admin {
+    border-left: 4px solid #007bff;
+}
+
+.utilisateur {
+    border-left: 4px solid #28a745;
+}
+
 .exit-button {
+    margin-top: 20px;
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 15px;
+    top: 15px;
     border: none;
     background: transparent;
-    background: transparent;
+    color: #555;
     cursor: pointer;
     font-size: 2rem;
+    transition: transform 0.2s ease;
+}
+
+.exit-button:hover {
+    transform: rotate(90deg);
+    color: #e74c3c;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    align-items: flex-start;
+}
+
+/* Nav styling par rôle */
+.admin-nav {
+    background-color: #eef6ff;
+}
+
+.utilisateur-nav {
+    background-color: #f0fff4;
+}
+
+.nav a {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-link {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.utilisateur-link {
+    color: #28a745;
+}
+
+.section-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+    margin: 2rem 0 1rem;
+}
+
+.list-equipments-link {
+    margin-top: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.list-equipments-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+    margin-right: .5rem;
 }

@@ -2,8 +2,12 @@ import styles from "../signup/Signup.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupUser } from "../../service/AuthenticationService.js";
+import {jwtDecode} from "jwt-decode";
+import {setCredentials} from "../../store/authSlice.js";
+import {useDispatch} from "react-redux";
 
 const Signup = () => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         nom: "",
         email: "",
@@ -40,7 +44,17 @@ const Signup = () => {
             });
 
             localStorage.setItem("access_token", data.access_token);
-            navigate("/home/equipements");
+            const {sub,email,role} = jwtDecode(data.access_token);
+
+            dispatch(setCredentials({ id:sub,email, role }));
+
+            if (role === "ADMIN") {
+                navigate("/home/equipements");
+            } else if (role === "UTILISATEUR") {
+                navigate("/home/dashboard");
+            } else {
+                setError("Rôle inconnu, accès refusé");
+            }
 
         } catch (err) {
             setError(err.message);

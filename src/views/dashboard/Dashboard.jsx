@@ -1,7 +1,11 @@
+import './Dashboard.module.css'
+
 const Dashboard = () => {
     return (
-        <div>
-            <h1>Bonjour Utilisateur</h1>
+        <div className="dashboard-container">
+            <h1 className="dashboard-header">Bonjour Utilisateur</h1>
+            <div className="dashboard-content">
+            </div>
         </div>
     );
 };
