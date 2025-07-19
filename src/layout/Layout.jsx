@@ -4,6 +4,7 @@ import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import styles from './Layout.module.css';
+import {Toaster} from "react-hot-toast";
 
 const Layout = () => {
     const [show, handleSetShow] = useState(false);
@@ -16,6 +17,10 @@ const Layout = () => {
             <main className={styles['outlet-container']}>
                 <Outlet />
             </main>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         </>
     );
 };

@@ -5,11 +5,11 @@ import { jwtDecode } from "jwt-decode";
 import { loginUser } from "../../service/AuthenticationService.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../store/authSlice.js";
+import {toast, Toaster} from "react-hot-toast";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -32,10 +32,10 @@ const Login = () => {
             } else if (role === "UTILISATEUR") {
                 navigate("/home/dashboard");
             } else {
-                setError("Rôle inconnu, accès refusé");
+                toast.error("Rôle inconnu, accès refusé",{duration: 2000});
             }
         } catch (err) {
-            setError(err.message || "Une erreur est survenue");
+            toast.error(err.message || "Une erreur est survenue",{duration:2000});
         }
     };
 
@@ -76,10 +76,11 @@ const Login = () => {
                     />
                     <button className={styles.button} type="submit">Se connecter</button>
 
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-
                     <span>Tu n'as pas encore de compte ? Inscris-toi <Link to="/signup">ici</Link></span>
                 </form>
+                <Toaster
+                    position="top-right"
+                    reverseOrder={false}/>
             </div>
         </div>
     );

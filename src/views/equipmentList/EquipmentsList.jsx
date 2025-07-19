@@ -5,29 +5,25 @@ import styles from "./EquipmentList.module.css";
 import EditIcon from "../../components/icons/EditIcon.js";
 import DeleteIcon from "../../components/icons/DeleteIcon.js";
 import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
+import {toast} from "react-hot-toast";
 
 
 const EquipmentsList = () => {
     const [equipments, setEquipments] = useState([]);
-    const [error, setError] = useState("");
     const navigate = useNavigate();
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-            setTimeout(() => navigate("/"), 100);
-        }
-        fetchAllEquipments();
-    }, []);
+        fetchAllEquipments().catch(console.error);
+    }, [navigate]);
 
     const fetchAllEquipments = async () => {
         try {
             const data = await getEquipments();
             setEquipments(data);
         } catch (err) {
-            setError("Erreur lors du chargement des équipements");
+            toast.error(err.message || "Erreur lors du chargement des équipements",{duration: 2000});
         }
     };
 
@@ -41,6 +37,7 @@ const EquipmentsList = () => {
     const confirmDelete = async () => {
         try {
             await deleteEquipment(selectedId);
+            toast.success('Equipement supprimé avec succès',{duration: 4000});
             setShowConfirm(false);
             setEquipments(prev => {
                 const newEquipments = [...prev];
@@ -52,7 +49,7 @@ const EquipmentsList = () => {
             })
             setSelectedId(null);
         } catch (err) {
-            setError("Erreur lors de la suppression de l’équipement");
+            toast.error(err.message || "Erreur lors de la suppression de l’équipement",{duration: 2000});
         }
     };
 
@@ -64,6 +61,7 @@ const EquipmentsList = () => {
         equipments.length > 0 ? (
                 <div className={styles["table-container"]}>
                     {showConfirm && <ConfirmModal
+                        title="Attention !"
                         message="Voulez-vous supprimer cet equipement ?"
                         handleConfirm={confirmDelete}
                         handleCancel={cancelDelete}
@@ -75,7 +73,6 @@ const EquipmentsList = () => {
                             <button className={styles['add-button']} onClick={() => navigate('/home')}>➕</button>
                         </div>
                     </div>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
 
                     <table className={styles.table}>
                         <thead>

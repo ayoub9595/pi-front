@@ -5,6 +5,7 @@ import { signupUser } from "../../service/AuthenticationService.js";
 import {jwtDecode} from "jwt-decode";
 import {setCredentials} from "../../store/authSlice.js";
 import {useDispatch} from "react-redux";
+import {toast, Toaster} from "react-hot-toast";
 
 const Signup = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,6 @@ const Signup = () => {
         confirmMotDePasse: ""
     });
 
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -29,7 +29,7 @@ const Signup = () => {
         e.preventDefault();
 
         if (formData.motDePasse !== formData.confirmMotDePasse) {
-            setError("Les mots de passe ne correspondent pas");
+            toast.error("Les mots de passe ne correspondent pas", {duration: 2000});
             return;
         }
 
@@ -53,11 +53,11 @@ const Signup = () => {
             } else if (role === "UTILISATEUR") {
                 navigate("/home/dashboard");
             } else {
-                setError("Rôle inconnu, accès refusé");
+                toast.error("Rôle inconnu, accès refusé", {duration: 2000});
             }
 
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message, {duration: 2000});
         }
     };
 
@@ -102,10 +102,12 @@ const Signup = () => {
 
                     <button className={styles.button} type="submit">S'inscrire</button>
 
-                    {error && <p style={{ color: "red" }}>{error}</p>}
 
                     <span>Tu as déjà un compte ? Connecte-toi <Link to="/">ici</Link></span>
                 </form>
+                <Toaster
+                    position="top-right"
+                    reverseOrder={false}/>
             </div>
         </div>
     );

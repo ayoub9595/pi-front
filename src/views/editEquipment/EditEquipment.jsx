@@ -7,13 +7,13 @@ import {
 
 import styles from "./EditEquipment.module.css";
 import DeleteIcon from "../../components/icons/DeleteIcon";
+import {toast} from "react-hot-toast";
 
 const EditEquipment = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [equipment, setEquipment] = useState(null);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchEquipment = async () => {
@@ -21,7 +21,7 @@ const EditEquipment = () => {
                 const data = await getEquipmentById(id);
                 setEquipment(data);
             } catch (err) {
-                setError("Erreur lors du chargement de l’équipement");
+                toast.error("Erreur lors du chargement de l’équipement",{duration: 2000});
             }
         };
 
@@ -58,9 +58,10 @@ const EditEquipment = () => {
         e.preventDefault();
         try {
             await updateEquipment(id, equipment);
+            toast.success("Equipement modifié avec succès",{duration: 4000});
             navigate("/home/equipements");
         } catch (err) {
-            setError("Erreur lors de la mise à jour");
+            toast.error(err.message || "Erreur lors de la mise à jour",{duration: 2000});
         }
     };
 
@@ -69,7 +70,6 @@ const EditEquipment = () => {
     return (
         <>
             <h2>Modifier un Équipement</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
 
             <form className={styles.form} onSubmit={handleSubmit}>
                 <label>Nom:</label>
