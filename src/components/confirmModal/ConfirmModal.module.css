@@ -8,21 +8,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
+    z-index: 1002;
 }
 
 .modal {
+    padding: 10px;
     background: white;
-    padding: 20px;
     border-radius: 8px;
-    width: 300px;
-    text-align: center;
+    width: 400px;
+}
+
+.title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+}
+.exit {
+    cursor: pointer;
 }
 
 .modal-actions {
     margin-top: 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    gap: 5px;
 }
 
 .confirm-button {

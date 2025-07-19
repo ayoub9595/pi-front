@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createEquipment } from "../../service/equipmentService";
 import styles from "./AppEquipment.module.css";
 import DeleteIcon from "../../components/icons/DeleteIcon.js";
+import {toast} from "react-hot-toast";
 
 const AddEquipment = () => {
     const navigate = useNavigate();
@@ -17,8 +18,6 @@ const AddEquipment = () => {
     });
 
     const [caracteristiques, setCaracteristiques] = useState([]);
-    const [success, setSuccess] = useState("");
-    const [error, setError] = useState("");
 
 
     const handleInputChange = (e) => {
@@ -46,9 +45,6 @@ const AddEquipment = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
-        setSuccess("");
-
         const fullData = {
             ...equipment,
             caracteristiques: caracteristiques.filter(
@@ -58,10 +54,10 @@ const AddEquipment = () => {
 
         try {
             await createEquipment(fullData);
-            setSuccess("Équipement ajouté avec succès !");
-            setTimeout(() => navigate("/home/equipements"), 1500);
+            toast.success("Équipement ajouté avec succès !",{duration: 4000});
+            navigate("/home/equipements");
         } catch (err) {
-            setError(err.message || "Erreur inattendue lors de l'ajout.");
+            toast.error(err.message || "Erreur inattendue lors de l'ajout.",{duration: 2000});
         }
     };
 
@@ -158,8 +154,6 @@ const AddEquipment = () => {
                     Enregistrer
                 </button>
 
-                {success && <p style={{ color: "green" }}>{success}</p>}
-                {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
         </>
     );
