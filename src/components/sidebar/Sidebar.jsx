@@ -26,13 +26,23 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                     <>
                         <Link to="/home" className={styles["admin-link"]}>➕ Ajouter équipement</Link>
                         <div className={styles["section-divider"]}></div>
+
                         <Link to="/home/equipements" className={`${styles["list-equipments-link"]} ${styles["admin-link"]}`}>
-                            Liste des équipements
+                            📋 Liste des équipements
+                        </Link>
+                        <Link to="/home/affectations" className={styles["admin-link"]}>
+                            📦 Liste des affectations
+                        </Link>
+                        <Link to="/home/affectations/create" className={styles["admin-link"]}>
+                            ➕ Créer une affectation
                         </Link>
                     </>
                 )}
+
                 {role === "UTILISATEUR" && (
-                    <Link to="/home/dashboard" className={styles["utilisateur-link"]}>📊 Tableau de bord</Link>
+                    <Link to="/home/dashboard" className={styles["utilisateur-link"]}>
+                        📊 Mes affectations
+                    </Link>
                 )}
             </nav>
         </div>

@@ -16,3 +16,6 @@ export const updateEquipment = async (id, equipmentData) => {
 export const getEquipmentById = async (id) => {
     return fetchClient(`/equipements/${id}`, "GET");
 };
+export const getUnassignedEquipments = async () => {
+    return fetchClient("/equipements/unassigned");
+};
