@@ -5,16 +5,19 @@ import { jwtDecode } from "jwt-decode";
 import { loginUser } from "../../service/AuthenticationService.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../store/authSlice.js";
-import {toast, Toaster} from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
+import { getCurrentUserRole } from "../../routerUtils/authUtils.js";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             const data = await loginUser({ email, motDePasse });
@@ -22,20 +25,25 @@ const Login = () => {
             const token = data.access_token;
             localStorage.setItem("access_token", token);
 
-            const {sub,email: userEmail,role} = jwtDecode(token);
+            const { sub, email: userEmail, role } = jwtDecode(token);
 
+            dispatch(setCredentials({ id: sub, email: userEmail, role }));
 
-            dispatch(setCredentials({ id:sub,email:userEmail, role }));
+            const userRole = getCurrentUserRole();
 
-            if (role === "ADMIN") {
-                navigate("/home/equipements");
-            } else if (role === "UTILISATEUR") {
-                navigate("/home/dashboard");
+            if (userRole === "ADMIN") {
+                navigate("/home/equipements", { replace: true });
+            } else if (userRole === "UTILISATEUR") {
+                navigate("/home/dashboard", { replace: true });
             } else {
-                toast.error("Rôle inconnu, accès refusé",{duration: 2000});
+                localStorage.removeItem("access_token");
+                toast.error("Rôle inconnu, accès refusé", { duration: 2000 });
             }
         } catch (err) {
-            toast.error(err.message || "Une erreur est survenue",{duration:2000});
+            localStorage.removeItem("access_token");
+            toast.error(err.message || "Une erreur est survenue", { duration: 2000 });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -65,6 +73,7 @@ const Login = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        disabled={isLoading}
                     />
                     <label>Mot de passe:</label>
                     <input
@@ -73,14 +82,24 @@ const Login = () => {
                         value={motDePasse}
                         onChange={(e) => setMotDePasse(e.target.value)}
                         required
+                        disabled={isLoading}
                     />
-                    <button className={styles.button} type="submit">Se connecter</button>
+                    <button
+                        className={styles.button}
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Connexion..." : "Se connecter"}
+                    </button>
 
-                    <span>Tu n'as pas encore de compte ? Inscris-toi <Link to="/signup">ici</Link></span>
+                    <span>
+                        Tu n'as pas encore de compte ? Inscris-toi <Link to="/signup">ici</Link>
+                    </span>
                 </form>
                 <Toaster
                     position="top-right"
-                    reverseOrder={false}/>
+                    reverseOrder={false}
+                />
             </div>
         </div>
     );

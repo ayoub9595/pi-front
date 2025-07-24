@@ -1,23 +1,20 @@
 import { Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { isLoggedIn, getCurrentUserRole } from "./authUtils";
 
 const PublicRoute = ({ children }) => {
-    const token = localStorage.getItem("access_token");
+    if (isLoggedIn()) {
+        const role = getCurrentUserRole();
 
-    if (token) {
-        try {
-            const decoded = jwtDecode(token);
-            const role = decoded?.role?.toUpperCase();
-
-            if (role === "ADMIN") {
-                return <Navigate to="/home/equipements" replace />;
-            } else {
-                return <Navigate to="/home/dashboard" replace />;
-            }
-        } catch (error) {
+        if (role === "ADMIN") {
+            return <Navigate to="/home/equipements" replace />;
+        } else if (role === "UTILISATEUR") {
+            return <Navigate to="/home/dashboard" replace />;
+        } else {
             localStorage.removeItem("access_token");
+            return children;
         }
     }
+
     return children;
 };
 

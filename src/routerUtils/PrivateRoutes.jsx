@@ -3,13 +3,19 @@ import { isLoggedIn, getCurrentUserRole } from "./authUtils";
 
 const PrivateRoute = ({ children, requiredRole }) => {
     if (!isLoggedIn()) {
-        return <Navigate to="/" />;
+        return <Navigate to="/" replace />;
     }
 
     if (requiredRole) {
         const role = getCurrentUserRole();
-        if (role !== requiredRole.toUpperCase()) {
-            return <Navigate to="/home/dashboard" />;
+        if (!role || role !== requiredRole.toUpperCase()) {
+            if (role === "ADMIN") {
+                return <Navigate to="/home/equipements" replace />;
+            } else if (role === "UTILISATEUR") {
+                return <Navigate to="/home/dashboard" replace />;
+            } else {
+                return <Navigate to="/" replace />;
+            }
         }
     }
 
