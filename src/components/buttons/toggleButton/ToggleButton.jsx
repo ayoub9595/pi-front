@@ -1,7 +1,7 @@
 import styles from './ToggleButton.module.css'
-const ToggleButton = ({handleOpenSideBar}) => {
+const ToggleButton = ({handleToggleSideBar}) => {
   return (
-    <button onClick={handleOpenSideBar} className={styles["toggle-button"]}>
+    <button onClick={handleToggleSideBar} className={styles["toggle-button"]}>
       <svg
         width="40px"
         height="40px"

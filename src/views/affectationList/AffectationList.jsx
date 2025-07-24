@@ -6,6 +6,7 @@ import DeleteIcon from "../../components/icons/DeleteIcon.js";
 import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
 import { toast } from "react-hot-toast";
 import styles from "./AffectationList.module.css";
+import Eye from "../../components/icons/Eye.jsx";
 
 const AffectationList = () => {
     const [affectations, setAffectations] = useState([]);
@@ -26,11 +27,15 @@ const AffectationList = () => {
         }
     };
 
-    const handleUpdate = (id) => {
+    const handleShow = id => {
+        console.log('You want to show affectation with id:',id)
+    }
+
+    const handleUpdate = id => {
         navigate(`/home/affectations/edit/${id}`);
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = id => {
         setSelectedId(id);
         setShowConfirm(true);
     };
@@ -89,6 +94,12 @@ const AffectationList = () => {
                         <td>{a.determine ? "Oui" : "Non"}</td>
                         <td>
                             <div className={styles["action-buttons"]}>
+                                <button
+                                    onClick={() => handleShow(a.id)}
+                                    className={`${styles["action-button"]} ${styles["show-btn"]}`}
+                                >
+                                    <Eye size={26} />
+                                </button>
                                 <button
                                     onClick={() => handleUpdate(a.id)}
                                     className={`${styles["action-button"]} ${styles["edit-btn"]}`}

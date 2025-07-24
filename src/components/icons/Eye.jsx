@@ -1,7 +1,8 @@
-const Eye = ({handleClick}) => {
+const Eye = ({handleClick,size}) => {
+    const strSize = size.toString();
     return (
         <>
-            <svg style={{cursor: 'pointer'}} onClick={handleClick} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg style={{cursor: 'pointer'}} onClick={handleClick} width={`${strSize}px`} height={`${strSize}px`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z"
                     stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
