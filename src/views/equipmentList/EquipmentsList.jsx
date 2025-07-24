@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { getEquipments, deleteEquipment } from "../../service/equipmentService.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./EquipmentList.module.css";
-import EditIcon from "../../components/icons/EditIcon.js";
-import DeleteIcon from "../../components/icons/DeleteIcon.js";
+import EditIcon from "../../components/icons/EditIcon.jsx";
+import DeleteIcon from "../../components/icons/DeleteIcon.jsx";
 import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
 import {toast} from "react-hot-toast";
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createEquipment } from "../../service/equipmentService";
 import styles from "./AppEquipment.module.css";
-import DeleteIcon from "../../components/icons/DeleteIcon.js";
+import DeleteIcon from "../../components/icons/DeleteIcon.jsx";
 import {toast} from "react-hot-toast";
 
 const AddEquipment = () => {
