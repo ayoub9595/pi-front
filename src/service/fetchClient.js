@@ -1,6 +1,28 @@
+import {store} from "../store/store.js";
+import {logout} from "../store/authSlice.js";
+
 const BASE_URL = "http://localhost:5001";
 
+let globalNavigate = null;
+
+export const setNavigateFunction = (navigate) => {
+    globalNavigate = navigate;
+};
+
 const getToken = () => localStorage.getItem("access_token");
+
+const handleTokenExpiration = () => {
+
+    localStorage.clear();
+    store.dispatch(logout());
+
+    if (globalNavigate) {
+        globalNavigate('/', { replace: true });
+    } else {
+
+        window.location.href = '/';
+    }
+};
 
 export const fetchClient = async (
     endpoint,
@@ -30,6 +52,11 @@ export const fetchClient = async (
 
     try {
         const response = await fetch(url, config);
+
+        if (response.status === 401) {
+            handleTokenExpiration();
+            throw new Error("Session expired. Please login again.");
+        }
 
         const contentType = response.headers.get("content-type");
 

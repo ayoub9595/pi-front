@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect } from "react"; // Adjust path as needed
 import Login from "./views/login/Login.jsx";
 import Signup from "./views/signup/Signup.jsx";
 import Layout from "./layout/Layout.jsx";
@@ -11,17 +12,28 @@ import PublicRoute from "./routerUtils/PublicRoutes.jsx";
 import AffectationList from "./views/affectationList/ListAffectation.jsx";
 import EditAffectation from "./views/editAffectation/EditAffectation.jsx";
 import CreateAffectation from "./views/addAffectation/AddAffectation.jsx";
+import {setNavigateFunction} from "./service/fetchClient.js";
 
-const App = () => {
+
+const NavigationSetup = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setNavigateFunction(navigate);
+    }, [navigate]);
+
+    return null;
+};
+
+const AppRoutes = () => {
     return (
-        <BrowserRouter>
+        <>
+            <NavigationSetup />
             <Routes>
-
-                {/* Routes publiques */}
                 <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
                 <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
 
-                {/* Routes pour ADMIN */}
+
                 <Route
                     path="/home"
                     element={
@@ -39,7 +51,7 @@ const App = () => {
                     <Route path="affectations/create" element={<CreateAffectation />} />
                 </Route>
 
-                {/* Route UTILISATEUR */}
+
                 <Route
                     path="/home/dashboard"
                     element={
@@ -50,8 +62,15 @@ const App = () => {
                 >
                     <Route index element={<Dashboard />} />
                 </Route>
-
             </Routes>
+        </>
+    );
+};
+
+const App = () => {
+    return (
+        <BrowserRouter>
+            <AppRoutes />
         </BrowserRouter>
     );
 };
