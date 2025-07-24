@@ -1,9 +1,67 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import styles from "./Sidebar.module.css";
+import {navigationData} from "../../utils/NavigationData.js";
 
 const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
     const role = useSelector((state) => state.auth.role);
+    const [openSections, setOpenSections] = useState({
+        equipement: false,
+        affectation: false
+    });
+
+
+    const toggleSection = (section) => {
+        setOpenSections(prev => ({
+            ...prev,
+            [section]: !prev[section]
+        }));
+    };
+
+    const renderNavigationItem = (item, index, isLast) => {
+        const { id, title, icon, isToggleable, subLinks, to } = item;
+
+        return (
+            <div key={id} className={styles["section"]}>
+                {isToggleable ? (
+                    <>
+                        <button
+                            className={styles["section-toggle"]}
+                            onClick={() => toggleSection(id)}
+                        >
+                            <span className={styles["section-icon"]}>{icon}</span>
+                            <span>{title}</span>
+                            <span className={`${styles["toggle-arrow"]} ${openSections[id] ? styles["toggle-arrow-open"] : ""}`}>
+                                ▼
+                            </span>
+                        </button>
+                        <div className={`${styles["section-content"]} ${openSections[id] ? styles["section-content-open"] : ""}`}>
+                            {subLinks.map((subLink, subIndex) => (
+                                <Link
+                                    key={subIndex}
+                                    to={subLink.to}
+                                    className={`${styles["admin-link"]} ${styles["sub-link"]}`}
+                                    onClick={handleCloseSideBar}
+                                >
+                                    {subLink.icon} {subLink.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <Link
+                        to={to}
+                        className={styles[role === "ADMIN" ? "admin-link" : "utilisateur-link"]}
+                        onClick={handleCloseSideBar}
+                    >
+                        {icon} {title}
+                    </Link>
+                )}
+                {!isLast && <div className={styles["section-divider"]}></div>}
+            </div>
+        );
+    };
 
     return (
         <div
@@ -22,27 +80,8 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                     ${role === "UTILISATEUR" ? styles["utilisateur-nav"] : ""}
                 `}
             >
-                {role === "ADMIN" && (
-                    <>
-                        <Link to="/home" className={styles["admin-link"]}>➕ Ajouter équipement</Link>
-                        <div className={styles["section-divider"]}></div>
-
-                        <Link to="/home/equipements" className={`${styles["list-equipments-link"]} ${styles["admin-link"]}`}>
-                            📋 Liste des équipements
-                        </Link>
-                        <Link to="/home/affectations" className={styles["admin-link"]}>
-                            📦 Liste des affectations
-                        </Link>
-                        <Link to="/home/affectations/create" className={styles["admin-link"]}>
-                            ➕ Créer une affectation
-                        </Link>
-                    </>
-                )}
-
-                {role === "UTILISATEUR" && (
-                    <Link to="/home/dashboard" className={styles["utilisateur-link"]}>
-                        📊 Mes affectations
-                    </Link>
+                {navigationData[role]?.map((item, index, array) =>
+                    renderNavigationItem(item, index, index === array.length - 1)
                 )}
             </nav>
         </div>
