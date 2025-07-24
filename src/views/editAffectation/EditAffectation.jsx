@@ -8,7 +8,7 @@ import {
 } from "../../service/affectationService.js";
 
 import { getAllUtilisateurs } from "../../service/utilisateurService.js";
-import {getUnassignedEquipments} from "../../service/equipmentService.js";
+import {getUnassignedEquipments, getEquipmentById} from "../../service/equipmentService.js";
 
 import styles from "./EditAffectation.module.css";
 import UserInfoCard from "../UserInfoCard.jsx";
@@ -38,11 +38,26 @@ const EditAffectation = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [affData, users, eqs] = await Promise.all([
+                const [affData, users, unassignedEqs] = await Promise.all([
                     getAffectationById(id),
                     getAllUtilisateurs(),
                     getUnassignedEquipments(),
                 ]);
+
+                let availableEquipments = [...unassignedEqs];
+                let currentEquipment = null;
+
+                if (affData.id_equipement) {
+                    try {
+                        currentEquipment = await getEquipmentById(affData.id_equipement);
+                        const isAlreadyInList = unassignedEqs.some(eq => eq.id === currentEquipment.id);
+                        if (!isAlreadyInList) {
+                            availableEquipments = [currentEquipment, ...unassignedEqs];
+                        }
+                    } catch (error) {
+                        console.warn("Could not fetch current equipment:", error);
+                    }
+                }
 
                 setAffectation({
                     id_equipement: affData.id_equipement ?? "",
@@ -55,10 +70,10 @@ const EditAffectation = () => {
                 });
 
                 setUtilisateurs(users);
-                setEquipments(eqs);
+                setEquipments(availableEquipments);
 
                 setSelectedUser(users.find((u) => u.id === affData.id_utilisateur));
-                setSelectedEquipment(eqs.find((e) => e.id === affData.id_equipement));
+                setSelectedEquipment(currentEquipment || availableEquipments.find((e) => e.id === affData.id_equipement));
             } catch {
                 toast.error("Erreur lors du chargement des données.");
             }
@@ -131,7 +146,7 @@ const EditAffectation = () => {
                             </option>
                         ))}
                     </select>
-                    <Eye
+                    <Eye size={30}
                         handleClick={() => {
                             if (!selectedEquipment) {
                                 toast.error("Veuillez d'abord sélectionner un équipement.");
@@ -158,8 +173,8 @@ const EditAffectation = () => {
                             </option>
                         ))}
                     </select>
-                    <Eye
-                        handleClick={() => {
+                    <Eye size={30}
+                         handleClick={() => {
                             if (!selectedUser) {
                                 toast.error("Veuillez d'abord sélectionner un utilisateur.");
                                 return;

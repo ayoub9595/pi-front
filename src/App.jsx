@@ -9,7 +9,7 @@ import EditEquipment from "./views/editEquipment/EditEquipment.jsx";
 import Dashboard from "./views/dashboard/Dashboard.jsx";
 import PrivateRoute from "./routerUtils/PrivateRoutes.jsx";
 import PublicRoute from "./routerUtils/PublicRoutes.jsx";
-import AffectationList from "./views/affectationList/ListAffectation.jsx";
+import AffectationList from "./views/affectationList/AffectationList.jsx";
 import EditAffectation from "./views/editAffectation/EditAffectation.jsx";
 import CreateAffectation from "./views/addAffectation/AddAffectation.jsx";
 import {setNavigateFunction} from "./service/fetchClient.js";

@@ -11,7 +11,7 @@ const Layout = () => {
 
     return (
         <>
-            <Navbar handleOpenSideBar={() => handleSetShow(true)} />
+            <Navbar handleToggleSideBar={() => handleSetShow(prev => !prev)} />
             <Sidebar showSideBar={show} handleCloseSideBar={() => handleSetShow(false)} />
             {show && <Backdrop />}
             <main className={styles['outlet-container']}>

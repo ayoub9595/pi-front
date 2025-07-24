@@ -119,7 +119,7 @@ const AddAffectation = () => {
                             </option>
                         ))}
                     </select>
-                    <Eye handleClick={showEquipmentDetails} />
+                    <Eye size={30} handleClick={showEquipmentDetails} />
                 </div>
 
                 <label>
@@ -140,7 +140,7 @@ const AddAffectation = () => {
                             </option>
                         ))}
                     </select>
-                    <Eye handleClick={showUserDetails} />
+                    <Eye size={30} handleClick={showUserDetails} />
                 </div>
 
 
