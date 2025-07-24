@@ -31,7 +31,7 @@ label input[type="checkbox"] {
     font-size: 1rem;
     box-sizing: border-box;
     font-family: inherit;
-    resize: vertical; /* allow textarea resizing vertically */
+    resize: vertical;
 }
 
 textarea.input {
