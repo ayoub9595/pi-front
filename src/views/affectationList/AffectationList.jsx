@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAffectations, deleteAffectation } from "../../service/affectationService.js";
 import { useNavigate } from "react-router-dom";
-import EditIcon from "../../components/icons/EditIcon.js";
-import DeleteIcon from "../../components/icons/DeleteIcon.js";
+import EditIcon from "../../components/icons/EditIcon.jsx";
+import DeleteIcon from "../../components/icons/DeleteIcon.jsx";
 import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
 import { toast } from "react-hot-toast";
 import styles from "./AffectationList.module.css";

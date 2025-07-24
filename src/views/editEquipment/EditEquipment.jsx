@@ -6,7 +6,7 @@ import {
 } from "../../service/equipmentService.js";
 
 import styles from "./EditEquipment.module.css";
-import DeleteIcon from "../../components/icons/DeleteIcon";
+import DeleteIcon from "../../components/icons/DeleteIcon.jsx";
 import {toast} from "react-hot-toast";
 
 const EditEquipment = () => {
