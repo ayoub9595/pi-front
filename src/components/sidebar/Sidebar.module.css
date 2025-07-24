@@ -31,16 +31,15 @@
 }
 
 .exit-button {
-    margin-top: 20px;
     position: absolute;
-    right: 15px;
-    top: 15px;
+    right: 10px;
+    top: 10px;
     border: none;
     background: transparent;
     color: #555;
     cursor: pointer;
     font-size: 2rem;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
 
 .exit-button:hover {
@@ -55,7 +54,6 @@
     align-items: flex-start;
 }
 
-/* Nav styling par rôle */
 .admin-nav {
     background-color: #eef6ff;
 }
@@ -92,6 +90,70 @@
     height: 1px;
     background-color: #ddd;
     margin: 2rem 0 1rem;
+}
+
+.section {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.section-toggle {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: transparent;
+    border: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s ease;
+    text-align: left;
+}
+
+.section-toggle:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.section-icon {
+    font-size: 1.2rem;
+}
+
+.toggle-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    color: #666;
+}
+
+.toggle-arrow-open {
+    transform: rotate(180deg);
+}
+
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 1rem;
+}
+
+.section-content-open {
+    max-height: 200px; /* Adjust based on your content */
+}
+
+.sub-link {
+    margin-bottom: 0.5rem !important;
+    font-size: 1rem !important;
+    padding: 0.6rem 1rem !important;
+    background-color: rgba(0, 123, 255, 0.05);
+    border-left: 2px solid #007bff;
+}
+
+.sub-link:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: translateX(4px);
 }
 
 .list-equipments-link {
