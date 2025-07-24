@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+
 import {
     getAffectationById,
     updateAffectation,
 } from "../../service/affectationService.js";
+
+import { getAllUtilisateurs } from "../../service/utilisateurService.js";
+import { getEquipments } from "../../service/equipmentService.js";
+
 import styles from "./EditAffectation.module.css";
-import { toast } from "react-hot-toast";
+import UserInfoCard from "../UserInfoCard.jsx";
+import UnassignedEquipmentsList from "../EquipmentInfoCard.jsx";
+import InfoModal from "../../components/infoModal/InfoModal.jsx";
+import Eye from "../../components/icons/Eye.jsx";
+import AffectationsDashboard from "../AffectationDashboard.jsx";
 
 const EditAffectation = () => {
     const { id } = useParams();
@@ -16,70 +26,150 @@ const EditAffectation = () => {
         id_utilisateur: "",
         date_debut: "",
         date_fin: "",
+        determine: false,
     });
 
+    const [utilisateurs, setUtilisateurs] = useState([]);
+    const [equipments, setEquipments] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedEquipment, setSelectedEquipment] = useState(null);
+    const [showUserInfo, setShowUserInfo] = useState(false);
+    const [showEquipInfo, setShowEquipInfo] = useState(false);
+    const [showAffectationsModal, setShowAffectationsModal] = useState(false);
+
     useEffect(() => {
-        const fetchAffectation = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getAffectationById(id);
+                const [affData, users, eqs] = await Promise.all([
+                    getAffectationById(id),
+                    getAllUtilisateurs(),
+                    getEquipments(),
+                ]);
+
                 setAffectation({
-                    id_equipement: data.id_equipement || "",
-                    id_utilisateur: data.id_utilisateur || "",
-                    date_debut: data.date_debut ? data.date_debut.split("T")[0] : "",
-                    date_fin: data.date_fin ? data.date_fin.split("T")[0] : "",
+                    id_equipement: affData.id_equipement ?? "",
+                    id_utilisateur: affData.id_utilisateur ?? "",
+                    date_debut: affData.date_debut
+                        ? affData.date_debut.split("T")[0]
+                        : "",
+                    date_fin: affData.date_fin ? affData.date_fin.split("T")[0] : "",
+                    determine: Boolean(affData.date_fin),
                 });
-            } catch (err) {
-                toast.error(err.message || "Erreur lors du chargement de l'affectation");
+
+                setUtilisateurs(users);
+                setEquipments(eqs);
+
+                setSelectedUser(users.find((u) => u.id === affData.id_utilisateur));
+                setSelectedEquipment(eqs.find((e) => e.id === affData.id_equipement));
+            } catch {
+                toast.error("Erreur lors du chargement des données.");
             }
         };
-        fetchAffectation();
+
+        fetchData();
     }, [id]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setAffectation({ ...affectation, [name]: value });
+        const { name, value, type, checked } = e.target;
+        const val = type === "checkbox" ? checked : value;
+
+        setAffectation((prev) => ({ ...prev, [name]: val }));
+
+        if (name === "id_utilisateur") {
+            const user = utilisateurs.find((u) => u.id === parseInt(value, 10));
+            setSelectedUser(user || null);
+        }
+
+        if (name === "id_equipement") {
+            const equip = equipments.find((eq) => eq.id === parseInt(value, 10));
+            setSelectedEquipment(equip || null);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!affectation.id_equipement || !affectation.id_utilisateur || !affectation.date_debut) {
+        if (
+            !affectation.id_utilisateur ||
+            !affectation.id_equipement ||
+            !affectation.date_debut
+        ) {
             toast.error("Les champs équipement, utilisateur et date début sont obligatoires.");
             return;
         }
 
+        const dataToSend = {
+            ...affectation,
+            date_fin: affectation.determine ? affectation.date_fin : null,
+        };
+
         try {
-            await updateAffectation(id, affectation);
+            await updateAffectation(id, dataToSend);
             toast.success("Affectation mise à jour avec succès !");
-            navigate("/affectations");
-        } catch (err) {
-            toast.error(err.message || "Erreur lors de la mise à jour.");
+            navigate("/home/affectations");
+        } catch (error) {
+            toast.error(error.message || "Erreur lors de la mise à jour.");
         }
     };
 
     return (
         <>
             <h2>Modifier une Affectation</h2>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <label>ID Équipement* :</label>
-                <input
-                    type="number"
-                    name="id_equipement"
-                    value={affectation.id_equipement}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                />
 
-                <label>ID Utilisateur* :</label>
-                <input
-                    type="number"
-                    name="id_utilisateur"
-                    value={affectation.id_utilisateur}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                />
+            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+                <label>Équipement :</label>
+                <div className={styles["select-section"]}>
+                    <select
+                        name="id_equipement"
+                        value={affectation.id_equipement}
+                        onChange={handleInputChange}
+                        required
+                        className={styles.input}
+                    >
+                        <option value="">-- Sélectionner un équipement --</option>
+                        {equipments.map((eq) => (
+                            <option key={eq.id} value={eq.id}>
+                                {eq.nom || "Sans nom"}
+                            </option>
+                        ))}
+                    </select>
+                    <Eye
+                        handleClick={() => {
+                            if (!selectedEquipment) {
+                                toast.error("Veuillez d'abord sélectionner un équipement.");
+                                return;
+                            }
+                            setShowEquipInfo(true);
+                        }}
+                    />
+                </div>
+
+                <label>Utilisateur :</label>
+                <div className={styles["select-section"]}>
+                    <select
+                        name="id_utilisateur"
+                        value={affectation.id_utilisateur}
+                        onChange={handleInputChange}
+                        required
+                        className={styles.input}
+                    >
+                        <option value="">-- Sélectionner un utilisateur --</option>
+                        {utilisateurs.map((user) => (
+                            <option key={user.id} value={user.id}>
+                                {user.nom}
+                            </option>
+                        ))}
+                    </select>
+                    <Eye
+                        handleClick={() => {
+                            if (!selectedUser) {
+                                toast.error("Veuillez d'abord sélectionner un utilisateur.");
+                                return;
+                            }
+                            setShowUserInfo(true);
+                        }}
+                    />
+                </div>
 
                 <label>Date Début* :</label>
                 <input
@@ -91,19 +181,61 @@ const EditAffectation = () => {
                     className={styles.input}
                 />
 
-                <label>Date Fin :</label>
-                <input
-                    type="date"
-                    name="date_fin"
-                    value={affectation.date_fin}
-                    onChange={handleInputChange}
-                    className={styles.input}
-                />
+                <label>
+                    <input
+                        type="checkbox"
+                        name="determine"
+                        checked={affectation.determine}
+                        onChange={handleInputChange}
+                        className={styles.checkbox}
+                    />
+                    {" "}Déterminé
+                </label>
 
-                <button type="submit" className={styles.button}>
-                    Enregistrer
-                </button>
+                {affectation.determine && (
+                    <>
+                        <label>Date Fin :</label>
+                        <input
+                            type="date"
+                            name="date_fin"
+                            value={affectation.date_fin}
+                            onChange={handleInputChange}
+                            className={styles.input}
+                        />
+                    </>
+                )}
+
+                <div className="flex gap-4 mt-4">
+                    <button type="submit" className={styles.button}>
+                        Enregistrer
+                    </button>
+                    <button
+                        type="button"
+                        className={styles.buttonaffectation}
+                        onClick={() => setShowAffectationsModal(true)}
+                    >
+                        Voir affectations
+                    </button>
+                </div>
             </form>
+
+            {showAffectationsModal && (
+                <InfoModal title="Liste des Affectations" onClose={() => setShowAffectationsModal(false)}>
+                    <AffectationsDashboard />
+                </InfoModal>
+            )}
+
+            {showUserInfo && selectedUser && (
+                <InfoModal title="Informations Utilisateur" onClose={() => setShowUserInfo(false)}>
+                    <UserInfoCard user={selectedUser} />
+                </InfoModal>
+            )}
+
+            {showEquipInfo && selectedEquipment && (
+                <InfoModal title="Informations Équipement" onClose={() => setShowEquipInfo(false)}>
+                    <UnassignedEquipmentsList equipment={selectedEquipment} />
+                </InfoModal>
+            )}
         </>
     );
 };
