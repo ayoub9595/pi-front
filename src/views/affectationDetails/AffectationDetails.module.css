@@ -1,0 +1,10 @@
+.affectation-infos {
+    padding: 0 15px;
+    max-width: 450px;
+    font-family: inherit;
+}
+.p {
+    font-size: 1rem;
+    color: #34495e;
+    margin-bottom: 8px;
+}
