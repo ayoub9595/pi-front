@@ -23,6 +23,8 @@
     border-bottom: 1px solid lightgray;
     display: flex;
     justify-content: space-between;
+    font-size: 24px;
+    font-weight: bold;
 }
 .exit {
     cursor: pointer;
