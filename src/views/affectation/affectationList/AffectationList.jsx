@@ -3,17 +3,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { getAffectations, deleteAffectation } from "../../service/affectationService.js";
+import { getAffectations, deleteAffectation } from "../../../service/AffectationService.js";
 
-import EditIcon from "../../components/icons/EditIcon.jsx";
-import DeleteIcon from "../../components/icons/DeleteIcon.jsx";
-import Eye from "../../components/icons/Eye.jsx";
+import EditIcon from "../../../components/icons/EditIcon.jsx";
+import DeleteIcon from "../../../components/icons/DeleteIcon.jsx";
+import Eye from "../../../components/icons/Eye.jsx";
 
-import ConfirmModal from "../../components/confirmModal/CofirmModal.jsx";
-import InfoModal from "../../components/infoModal/InfoModal.jsx";
+import ConfirmModal from "../../../components/confirmModal/CofirmModal.jsx";
+import InfoModal from "../../../components/infoModal/InfoModal.jsx";
 
-import UserInfoCard from "../UserInfoCard.jsx";
-import UnassignedEquipmentsList from "../EquipmentInfoCard.jsx";
+import UserInfoCard from "../../UserInfoCard.jsx";
+import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
 
 import styles from "./AffectationList.module.css";
 import AffectationDetails from "../affectationDetails/AffectationDetails.jsx";

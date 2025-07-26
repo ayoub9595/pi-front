@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { createAffectation } from "../../service/affectationService.js";
-import { getAllUtilisateurs } from "../../service/utilisateurService.js";
-import { getUnassignedEquipments } from "../../service/equipmentService.js";
+import { createAffectation } from "../../../service/AffectationService.js";
+import { getAllUtilisateurs } from "../../../service/UtilisateurService.js";
+import { getUnassignedEquipments } from "../../../service/equipmentService.js";
 
 import styles from "./AddAffectation.module.css";
-import UserInfoCard from "../UserInfoCard.jsx";
-import UnassignedEquipmentsList from "../EquipmentInfoCard.jsx";
-import InfoModal from "../../components/infoModal/InfoModal.jsx";
-import Eye from "../../components/icons/Eye.jsx";
+import UserInfoCard from "../../UserInfoCard.jsx";
+import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
+import InfoModal from "../../../components/infoModal/InfoModal.jsx";
+import Eye from "../../../components/icons/Eye.jsx";
 
 const AddAffectation = () => {
     const navigate = useNavigate();

@@ -2,11 +2,11 @@ import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { loginUser } from "../../service/AuthenticationService.js";
+import { loginUser } from "../../../service/AuthenticationService.js";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../../store/authSlice.js";
+import { setCredentials } from "../../../store/authSlice.js";
 import { toast, Toaster } from "react-hot-toast";
-import { getCurrentUserRole } from "../../routerUtils/authUtils.js";
+import { getCurrentUserRole } from "../../../routerUtils/authUtils.js";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ const Login = () => {
             if (userRole === "ADMIN") {
                 navigate("/home/equipements", { replace: true });
             } else if (userRole === "UTILISATEUR") {
-                navigate("/home/dashboard", { replace: true });
+                navigate("/home/affectations", { replace: true });
             } else {
                 localStorage.removeItem("access_token");
                 toast.error("Rôle inconnu, accès refusé", { duration: 2000 });

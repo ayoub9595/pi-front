@@ -1,4 +1,4 @@
-import styles from "./addAffectation/AddAffectation.module.css"
+import styles from "./affectation/addAffectation/AddAffectation.module.css"
 const UserInfoCard = ({ user }) => {
     if (!user) return null;
 
