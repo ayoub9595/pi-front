@@ -2,24 +2,18 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-
 import { getAffectations, deleteAffectation } from "../../../service/AffectationService.js";
-
 import EditIcon from "../../../components/icons/EditIcon.jsx";
 import DeleteIcon from "../../../components/icons/DeleteIcon.jsx";
 import Eye from "../../../components/icons/Eye.jsx";
-
 import ConfirmModal from "../../../components/confirmModal/CofirmModal.jsx";
-import InfoModal from "../../../components/infoModal/InfoModal.jsx";
-
-import UserInfoCard from "../../UserInfoCard.jsx";
-import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
-
+import Loader from "../../../components/loader/Loader.jsx";
 import styles from "./AffectationList.module.css";
 import AffectationDetails from "../affectationDetails/AffectationDetails.jsx";
 
 const AffectationList = () => {
     const [affectations, setAffectations] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -34,10 +28,13 @@ const AffectationList = () => {
 
     const fetchAllAffectations = async () => {
         try {
+            setIsLoading(true);
             const data = await getAffectations();
             setAffectations(data);
         } catch (err) {
             toast.error(err.message || "Erreur lors du chargement des affectations", { duration: 2000 });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -80,7 +77,31 @@ const AffectationList = () => {
         setSelectedId(null);
     };
 
-    return affectations.length > 0 ? (
+    // Show loader while data is being fetched
+    if (isLoading) {
+        return <Loader />;
+    }
+
+    // Show "no affectations" message when data is loaded but empty
+    if (affectations.length === 0) {
+        return (
+            <div className={styles["no-affectations-container"]}>
+                <div className={styles.header}>
+                    <h2>Liste des Affectations</h2>
+                    {role === "ADMIN" && (
+                        <button className={styles["add-button"]} onClick={() => navigate("/home/affectations/create")}>
+                            ➕
+                        </button>
+                    )}
+                </div>
+                <div className={styles["no-affectations-message"]}>
+                    <p>Aucune affectation disponible</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
         <div className={styles["table-container"]}>
             {showConfirm && (
                 <ConfirmModal
@@ -154,8 +175,6 @@ const AffectationList = () => {
                 </tbody>
             </table>
         </div>
-    ) : (
-        <p>Chargement ...</p>
     );
 };
 
