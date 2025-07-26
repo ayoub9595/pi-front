@@ -5,16 +5,16 @@ import { toast } from "react-hot-toast";
 import {
     getAffectationById,
     updateAffectation,
-} from "../../service/affectationService.js";
+} from "../../../service/AffectationService.js";
 
-import { getAllUtilisateurs } from "../../service/utilisateurService.js";
-import {getUnassignedEquipments, getEquipmentById} from "../../service/equipmentService.js";
+import { getAllUtilisateurs } from "../../../service/UtilisateurService.js";
+import {getUnassignedEquipments, getEquipmentById} from "../../../service/equipmentService.js";
 
 import styles from "./EditAffectation.module.css";
-import UserInfoCard from "../UserInfoCard.jsx";
-import UnassignedEquipmentsList from "../EquipmentInfoCard.jsx";
-import InfoModal from "../../components/infoModal/InfoModal.jsx";
-import Eye from "../../components/icons/Eye.jsx";
+import UserInfoCard from "../../UserInfoCard.jsx";
+import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
+import InfoModal from "../../../components/infoModal/InfoModal.jsx";
+import Eye from "../../../components/icons/Eye.jsx";
 
 const EditAffectation = () => {
     const { id } = useParams();

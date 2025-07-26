@@ -1,6 +1,6 @@
-import InfoModal from "../../components/infoModal/InfoModal.jsx";
-import UserInfoCard from "../UserInfoCard.jsx";
-import UnassignedEquipmentsList from "../EquipmentInfoCard.jsx";
+import InfoModal from "../../../components/infoModal/InfoModal.jsx";
+import UserInfoCard from "../../UserInfoCard.jsx";
+import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
 import styles from "./AffectationDetails.module.css";
 
 const AffectationDetails = ({affectation,handleClose}) => {

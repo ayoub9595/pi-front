@@ -1,9 +1,9 @@
-import styles from "../signup/Signup.module.css";
+import styles from "./Signup.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signupUser } from "../../service/AuthenticationService.js";
+import { signupUser } from "../../../service/AuthenticationService.js";
 import {jwtDecode} from "jwt-decode";
-import {setCredentials} from "../../store/authSlice.js";
+import {setCredentials} from "../../../store/authSlice.js";
 import {useDispatch} from "react-redux";
 import {toast, Toaster} from "react-hot-toast";
 
