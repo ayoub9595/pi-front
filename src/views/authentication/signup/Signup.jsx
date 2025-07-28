@@ -40,7 +40,7 @@ const Signup = () => {
                 cin: formData.cin,
                 telephone: formData.telephone,
                 motDePasse: formData.motDePasse,
-                role: formData.role,  // Envoi du rôle
+                role: formData.role,
             });
 
             localStorage.setItem("access_token", data.access_token);
@@ -51,7 +51,7 @@ const Signup = () => {
             if (role === "ADMIN") {
                 navigate("/home/equipements");
             } else if (role === "UTILISATEUR") {
-                navigate("/home/dashboard");
+                navigate("/home/affectations");
             } else {
                 toast.error("Rôle inconnu, accès refusé", {duration: 2000});
             }

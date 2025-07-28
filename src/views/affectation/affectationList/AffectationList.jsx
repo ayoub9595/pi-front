@@ -76,13 +76,12 @@ const AffectationList = () => {
         setShowConfirm(false);
         setSelectedId(null);
     };
-
-    // Show loader while data is being fetched
+    
     if (isLoading) {
         return <Loader />;
     }
 
-    // Show "no affectations" message when data is loaded but empty
+  
     if (affectations.length === 0) {
         return (
             <div className={styles["no-affectations-container"]}>
