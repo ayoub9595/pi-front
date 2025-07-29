@@ -18,6 +18,14 @@ export const navigationData = {
                 { to: "/home/affectations/create", label: "Créer une affectation" }
             ]
         },
+        {
+            id: "reclamation",
+            title: "Réclamation",
+            isToggleable: true,
+            subLinks: [
+                { to: "/home/reclamations", label: "Liste des réclamations" }
+            ]
+        }
     ],
 
     UTILISATEUR: [
@@ -35,6 +43,7 @@ export const navigationData = {
             isToggleable: true,
             subLinks: [
                 { to: "/home/reclamations/create", label: "Faire une réclamation" },
+                { to: "/home/reclamations", label: "Mes réclamations" }
             ]
         }
     ]

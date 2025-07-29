@@ -31,6 +31,4 @@ export const getUnassignedEquipments = async () => {
     return fetchClient("/equipments/unassigned");
 };
 
-export const getEquipementsActifsByUtilisateurId = async (utilisateurId) => {
-    return fetchClient(`/affectations/utilisateur/${utilisateurId}/equipements-actifs`, "GET");
-};
+
