@@ -1,54 +1,40 @@
 export const navigationData = {
     ADMIN: [
         {
-            id: 'equipement',
-            title: 'Équipement',
-            icon: '🔧',
+            id: "equipement",
+            title: "Équipement",
             isToggleable: true,
             subLinks: [
-                {
-                    to: '/home',
-                    label: 'Ajouter équipement',
-                    icon: '➕'
-                },
-                {
-                    to: '/home/equipements',
-                    label: 'Liste des équipements',
-                    icon: '📋'
-                }
+                { to: "/home", label: "Ajouter équipement" },
+                { to: "/home/equipements", label: "Liste des équipements" }
             ]
         },
         {
-            id: 'affectation',
-            title: 'Affectation',
-            icon: '📦',
+            id: "affectation",
+            title: "Affectation",
             isToggleable: true,
             subLinks: [
-                {
-                    to: '/home/affectations',
-                    label: 'Liste des affectations',
-                    icon: '📋'
-                },
-                {
-                    to: '/home/affectations/create',
-                    label: 'Créer une affectation',
-                    icon: '➕'
-                }
+                { to: "/home/affectations", label: "Liste des affectations" },
+                { to: "/home/affectations/create", label: "Créer une affectation" }
             ]
-        }
+        },
     ],
+
     UTILISATEUR: [
         {
-            id: 'affectation',
-            title: 'Affectation',
-            icon: '📦',
+            id: "affectation",
+            title: "Affectation",
             isToggleable: true,
             subLinks: [
-                {
-                    to: '/home/affectations',
-                    label: 'Mes affectations',
-                    icon: '📋'
-                }
+                { to: "/home/affectations", label: "Mes affectations" }
+            ]
+        },
+        {
+            id: "reclamation",
+            title: "Réclamation",
+            isToggleable: true,
+            subLinks: [
+                { to: "/home/reclamations/create", label: "Faire une réclamation" },
             ]
         }
     ]

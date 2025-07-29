@@ -1,5 +1,5 @@
 import { fetchClient } from "./fetchClient.js";
-import {store} from "../store/store";
+import { store } from "../store/store";
 
 export const createAffectation = async (affectationData) => {
     return fetchClient("/affectations/", "POST", affectationData);
@@ -29,4 +29,8 @@ export const deleteAffectation = async (id) => {
 
 export const getUnassignedEquipments = async () => {
     return fetchClient("/equipments/unassigned");
+};
+
+export const getEquipementsActifsByUtilisateurId = async (utilisateurId) => {
+    return fetchClient(`/affectations/utilisateur/${utilisateurId}/equipements-actifs`, "GET");
 };
