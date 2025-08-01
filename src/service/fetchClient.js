@@ -55,7 +55,9 @@ export const fetchClient = async (
 
         if (response.status === 401) {
             handleTokenExpiration();
-            throw new Error("Session expired. Please login again.");
+            throw new Error("Session expirée. Veuillez vous reconnecter.");
+        } else if (response.status === 403) {
+            throw new Error("Accès refusé : vous n'avez pas les droits.");
         }
 
         const contentType = response.headers.get("content-type");

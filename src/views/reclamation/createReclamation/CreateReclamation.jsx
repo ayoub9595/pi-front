@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
-import {getEquipementsActifsByUtilisateurId} from "../../../service/affectationService.js";
 import {createReclamation} from "../../../service/reclamationService.js";
 import styles from './CreateReclamation.module.css';
+import {getEquipementsActifsByUtilisateurId} from "../../../service/equipmentService.js";
 
 const CreateReclamation = () => {
     const [equipements, setEquipements] = useState([]);
@@ -46,7 +46,8 @@ const CreateReclamation = () => {
             toast.success("Réclamation envoyée avec succès !");
             navigate("/home/affectations");
         } catch (error) {
-            toast.error(error?.message || "Erreur lors de l'envoi de la réclamation.");
+            console.log(error);
+            toast.error(error?.message || error.msg || "Erreur lors de l'envoi de la réclamation.");
         }
     };
 

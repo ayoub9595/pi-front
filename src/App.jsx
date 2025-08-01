@@ -14,8 +14,8 @@ import CreateAffectation from "./views/affectation/addAffectation/AddAffectation
 import { setNavigateFunction } from "./service/fetchClient.js";
 import AccessDenied from "./views/accessDenied/AccessDenied.jsx";
 import NotFound from "./views/notFound/NotFound.jsx";
-import CreateReclamation from "./views/reclamation/create_reclamation/CreateReclamation.jsx";
-
+import CreateReclamation from "./views/reclamation/createReclamation/CreateReclamation.jsx";
+import ReclamationDashboard from "./views/reclamation/listReclamation/ReclamationList.jsx";
 const NavigationSetup = () => {
     const navigate = useNavigate();
 
@@ -79,6 +79,14 @@ const AppRoutes = () => {
                         element={
                             <PrivateRoute requiredRole="ADMIN" useAccessDenied={true}>
                                 <EditAffectation />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="reclamations"
+                        element={
+                            <PrivateRoute>
+                                <ReclamationDashboard />
                             </PrivateRoute>
                         }
                     />

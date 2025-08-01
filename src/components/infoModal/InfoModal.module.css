@@ -15,7 +15,9 @@
     padding: 10px;
     background: white;
     border-radius: 8px;
-    width: 400px;
+    width: 50vw;
+    max-height: 90vh;
+    overflow-y: scroll;
 }
 
 .title {

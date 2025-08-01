@@ -27,3 +27,4 @@ export const deleteReclamation = async (id) => {
     return fetchClient(`/reclamations/${id}`, "DELETE");
 };
 
+
