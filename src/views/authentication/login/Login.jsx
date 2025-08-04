@@ -14,7 +14,6 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -22,30 +21,32 @@ const Login = () => {
         try {
             const data = await loginUser({ email, motDePasse });
 
-            const token = data.access_token;
-            localStorage.setItem("access_token", token);
+            const { access_token, refresh_token } = data;
+            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("refresh_token", refresh_token);
 
-            const { sub, email: userEmail, role } = jwtDecode(token);
+            const { sub, email: userEmail, role } = jwtDecode(access_token);
 
             dispatch(setCredentials({ id: sub, email: userEmail, role }));
 
-            const userRole = getCurrentUserRole();
-
-            if (userRole === "ADMIN") {
+            if (role === "ADMIN") {
                 navigate("/home/equipements", { replace: true });
-            } else if (userRole === "UTILISATEUR") {
+            } else if (role === "UTILISATEUR") {
                 navigate("/home/affectations", { replace: true });
             } else {
                 localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
                 toast.error("Rôle inconnu, accès refusé", { duration: 2000 });
             }
         } catch (err) {
             localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
             toast.error(err.message || "Une erreur est survenue", { duration: 2000 });
         } finally {
             setIsLoading(false);
         }
     };
+
 
     return (
         <div className={styles.container}>

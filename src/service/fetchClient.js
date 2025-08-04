@@ -1,5 +1,5 @@
-import {store} from "../store/store.js";
-import {logout} from "../store/authSlice.js";
+import { store } from "../store/store.js";
+import { logout } from "../store/authSlice.js";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -12,16 +12,34 @@ export const setNavigateFunction = (navigate) => {
 const getToken = () => localStorage.getItem("access_token");
 
 const handleTokenExpiration = () => {
-
     localStorage.clear();
     store.dispatch(logout());
 
     if (globalNavigate) {
-        globalNavigate('/', { replace: true });
+        globalNavigate("/", { replace: true });
     } else {
-
-        window.location.href = '/';
+        window.location.href = "/";
     }
+};
+
+const refreshAccessToken = async () => {
+    const refresh_token = localStorage.getItem("refresh_token");
+    if (!refresh_token) throw new Error("Aucun token de rafraîchissement");
+
+    const response = await fetch(`${BASE_URL}/auth/refresh`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${refresh_token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Échec du rafraîchissement du token");
+    }
+
+    const data = await response.json();
+    localStorage.setItem("access_token", data.access_token);
+    return data.access_token;
 };
 
 export const fetchClient = async (
@@ -30,15 +48,15 @@ export const fetchClient = async (
     body = null,
     customHeaders = {}
 ) => {
-    const token = getToken();
+    let token = getToken();
 
-    const headers = {
+    let headers = {
         "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...customHeaders,
     };
 
-    const config = {
+    let config = {
         method,
         headers,
     };
@@ -51,17 +69,23 @@ export const fetchClient = async (
     const url = `${BASE_URL}${cleanEndpoint}`;
 
     try {
-        const response = await fetch(url, config);
+        let response = await fetch(url, config);
 
         if (response.status === 401) {
-            handleTokenExpiration();
-            throw new Error("Session expirée. Veuillez vous reconnecter.");
-        } else if (response.status === 403) {
-            throw new Error("Accès refusé : vous n'avez pas les droits.");
+
+            try {
+                const newToken = await refreshAccessToken();
+                localStorage.setItem("access_token", newToken);
+                headers.Authorization = `Bearer ${newToken}`;
+                config.headers = headers;
+                response = await fetch(url, config);
+            } catch (refreshError) {
+                handleTokenExpiration();
+                throw new Error("Session expirée. Veuillez vous reconnecter.");
+            }
         }
 
         const contentType = response.headers.get("content-type");
-
         let data;
         if (contentType && contentType.includes("application/json")) {
             data = await response.json();
@@ -70,7 +94,8 @@ export const fetchClient = async (
         }
 
         if (!response.ok) {
-            const message = data?.msg || data?.error || data?.message || "Erreur serveur";
+            const message =
+                data?.msg || data?.error || data?.message || "Erreur serveur";
             throw new Error(message);
         }
 
