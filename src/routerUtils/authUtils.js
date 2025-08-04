@@ -1,26 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 
 export const isLoggedIn = () => {
+
     const token = localStorage.getItem("access_token");
+    const refreshToken = localStorage.getItem("refresh_token");
 
-    if (!token) {
-        return false;
-    }
+    return !!(token || refreshToken);
 
-    try {
-        const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-
-        if (decoded.exp < currentTime) {
-            localStorage.removeItem("access_token");
-            return false;
-        }
-
-        return true;
-    } catch (error) {
-        localStorage.removeItem("access_token");
-        return false;
-    }
 };
 
 export const getCurrentUserRole = () => {
@@ -32,13 +18,6 @@ export const getCurrentUserRole = () => {
 
     try {
         const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-
-        if (decoded.exp < currentTime) {
-            localStorage.removeItem("access_token");
-            return null;
-        }
-
         return decoded?.role?.toUpperCase();
     } catch (error) {
         localStorage.removeItem("access_token");
