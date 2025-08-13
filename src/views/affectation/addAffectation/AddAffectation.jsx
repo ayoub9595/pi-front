@@ -11,9 +11,12 @@ import UserInfoCard from "../../UserInfoCard.jsx";
 import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
 import InfoModal from "../../../components/infoModal/InfoModal.jsx";
 import Eye from "../../../components/icons/Eye.jsx";
+import Loader from "../../../components/loader/Loader.jsx";
 
 const AddAffectation = () => {
     const navigate = useNavigate();
+
+    const [isLoading,setLoading] = useState(true);
 
     const [affectation, setAffectation] = useState({
         id_equipement: "",
@@ -32,13 +35,16 @@ const AddAffectation = () => {
     const [showUserInfo, setShowUserInfo] = useState(false);
     const [showEquipInfo, setShowEquipInfo] = useState(false);
 
+
     useEffect(() => {
         async function fetchData() {
+            setLoading(true);
             try {
                 const users = await getAllUtilisateurs();
                 const unassigned = await getUnassignedEquipments();
                 setUtilisateurs(users);
                 setEquipments(unassigned);
+                setLoading(false)
             } catch (error) {
                 toast.error("Erreur de chargement des données.");
             }
@@ -89,15 +95,19 @@ const AddAffectation = () => {
         }
 
         try {
+            setLoading(true);
             await createAffectation(affectation);
             toast.success("Affectation créée avec succès !");
             navigate("/home/affectations");
         } catch (err) {
             toast.error(err.message || "Erreur lors de la création.");
+        }finally {
+            setLoading(false);
         }
     };
 
     return (
+        isLoading ? <Loader /> :
         <>
             <h2>Créer une Affectation</h2>
             <form className={styles.form} onSubmit={handleSubmit}>

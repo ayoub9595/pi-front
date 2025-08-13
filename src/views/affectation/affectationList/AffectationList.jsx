@@ -62,13 +62,16 @@ const AffectationList = () => {
 
     const confirmDelete = async () => {
         try {
+            setIsLoading(true);
+            setShowConfirm(false);
             await deleteAffectation(selectedId);
             toast.success("Affectation supprimée avec succès", { duration: 4000 });
             setAffectations((prev) => prev.filter((a) => a.id !== selectedId));
-            setShowConfirm(false);
             setSelectedId(null);
         } catch (err) {
             toast.error(err.message || "Erreur lors de la suppression", { duration: 2000 });
+        }finally {
+            setIsLoading(false);
         }
     };
 
