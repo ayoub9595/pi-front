@@ -15,10 +15,13 @@ import UserInfoCard from "../../UserInfoCard.jsx";
 import UnassignedEquipmentsList from "../../EquipmentInfoCard.jsx";
 import InfoModal from "../../../components/infoModal/InfoModal.jsx";
 import Eye from "../../../components/icons/Eye.jsx";
+import Loader from "../../../components/loader/Loader.jsx";
 
 const EditAffectation = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
+    const [isLoading,setLoading] = useState(true);
 
     const [affectation, setAffectation] = useState({
         id_equipement: "",
@@ -37,6 +40,7 @@ const EditAffectation = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const [affData, users, unassignedEqs] = await Promise.all([
                     getAffectationById(id),
@@ -76,6 +80,9 @@ const EditAffectation = () => {
                 setSelectedEquipment(currentEquipment || availableEquipments.find((e) => e.id === affData.id_equipement));
             } catch {
                 toast.error("Erreur lors du chargement des données.");
+            }
+            finally {
+                setLoading(false);
             }
         };
 
@@ -117,15 +124,19 @@ const EditAffectation = () => {
         };
 
         try {
+            setLoading(true)
             await updateAffectation(id, dataToSend);
             toast.success("Affectation mise à jour avec succès !");
             navigate("/home/affectations");
         } catch (error) {
             toast.error(error.message || "Erreur lors de la mise à jour.");
+        }finally {
+            setLoading(false);
         }
     };
 
     return (
+        isLoading ? <Loader /> :
         <>
             <h2>Modifier une Affectation</h2>
 
