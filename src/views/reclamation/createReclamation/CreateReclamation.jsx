@@ -5,12 +5,14 @@ import {useNavigate} from "react-router-dom";
 import {createReclamation} from "../../../service/reclamationService.js";
 import styles from './CreateReclamation.module.css';
 import {getEquipementsActifsByUtilisateurId} from "../../../service/equipmentService.js";
+import Loader from "../../../components/loader/Loader.jsx";
 
 const CreateReclamation = () => {
     const [equipements, setEquipements] = useState([]);
     const [selectedEquipementId, setSelectedEquipementId] = useState("");
     const [description, setDescription] = useState("");
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
 
     const utilisateurId = useSelector(state => state.auth.id);
 
@@ -22,6 +24,8 @@ const CreateReclamation = () => {
                 setEquipements(data);
             } catch (error) {
                 toast.error("Erreur lors du chargement des équipements.");
+            }finally {
+                setIsLoading(false);
             }
         };
 
@@ -35,7 +39,7 @@ const CreateReclamation = () => {
             toast.error("Veuillez remplir tous les champs.");
             return;
         }
-
+        setIsLoading(true);
         try {
             await createReclamation({
                 id_utilisateur: utilisateurId,
@@ -43,15 +47,18 @@ const CreateReclamation = () => {
                 description: description.trim(),
             });
 
+            navigate("/home/reclamations");
             toast.success("Réclamation envoyée avec succès !");
-            navigate("/home/affectations");
         } catch (error) {
             console.log(error);
             toast.error(error?.message || error.msg || "Erreur lors de l'envoi de la réclamation.");
+        }finally {
+            setIsLoading(false);
         }
     };
 
     return (
+        isLoading ? <Loader/> :
         <>
             <h2>Nouvelle Réclamation</h2>
             <form onSubmit={handleSubmit} className={styles.form}>

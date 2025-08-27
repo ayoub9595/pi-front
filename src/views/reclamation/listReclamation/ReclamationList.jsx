@@ -5,12 +5,15 @@ import styles from "./ReclamationList.module.css";
 import ReclamationDetails from "../reclamationDetails/ReclamationDetails.jsx";
 import { toast } from "react-hot-toast";
 import Loader from "../../../components/loader/Loader.jsx";
+import {useNavigate} from "react-router-dom";
 
-const ReclamationDashboard = () => {
+const ReclamationList = () => {
     const [reclamations, setReclamations] = useState([]);
     const [selectedReclamation, setSelectedReclamation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadReclamations();
@@ -61,6 +64,22 @@ const ReclamationDashboard = () => {
 
     if (loading) return <Loader />;
 
+    if (reclamations.length === 0) {
+        return (
+            <div className={styles["no-affectations-container"]}>
+                <div className={styles.header}>
+                    <h2>Liste des réclamations</h2>
+                        <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
+                            ➕
+                        </button>
+                </div>
+                <div className={styles["no-affectations-message"]}>
+                    <p>Aucune réclamation disponible</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             {showDetailsModal && selectedReclamation && (
@@ -72,7 +91,12 @@ const ReclamationDashboard = () => {
             )}
 
             <div className={styles["table-container"]}>
-                <h2 className="text-xl font-bold mb-4">Liste des Réclamations</h2>
+                <div className={styles.header}>
+                    <h2>Liste des réclamations</h2>
+                    <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
+                        ➕
+                    </button>
+                </div>
 
                 <table className={styles.table}>
                     <thead>
@@ -111,4 +135,4 @@ const ReclamationDashboard = () => {
     );
 };
 
-export default ReclamationDashboard;
+export default ReclamationList;

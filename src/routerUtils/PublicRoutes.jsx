@@ -8,7 +8,7 @@ const PublicRoute = ({ children }) => {
         if (role === "ADMIN") {
             return <Navigate to="/home/equipements" replace />;
         } else if (role === "UTILISATEUR") {
-            return <Navigate to="/home/dashboard" replace />;
+            return <Navigate to="/home/affectations/" replace />;
         } else {
             localStorage.removeItem("access_token");
             return children;
