@@ -42,15 +42,15 @@ const ReclamationList = () => {
         setSelectedReclamation(null);
     };
 
-    const handleProcessReclamation = async (reclmation) => {
+    const handleProcessReclamation = async (reclamation) => {
         try {
-            await updateReclamation(selectedReclamation.id,  reclmation);
-            toast.success("Réclamation acceptée avec succès");
+            await updateReclamation(selectedReclamation.id,  reclamation);
+            toast.success("Statut de reclamation modifié avec succès");
             const index = reclamations.findIndex(rec => rec.id === selectedReclamation.id);
             if(index > -1) {
                 const newReclamations = [...reclamations];
-                newReclamations[index].etat_reclamation = reclmation.etat_reclamation;
-                newReclamations[index].commentaire = reclmation.commentaire;
+                newReclamations[index].etat_reclamation = reclamation.etat_reclamation;
+                newReclamations[index].commentaire = reclamation.commentaire;
                 setReclamations(newReclamations);
             }
             setShowDetailsModal(false);

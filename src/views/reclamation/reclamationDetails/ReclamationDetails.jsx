@@ -54,7 +54,7 @@ const ReclamationDetails = ({ reclamation, onClose, onProcess }) => {
             <h3>Etat de la demande:</h3>
             <div className={styles["reclamation-details"]}>
                 <p><strong>Etat :</strong> {reclamation.etat_reclamation ?? "—"}</p>
-                <p><strong>Commentaire :</strong> {reclamation.commentaire ?? "—"}</p>
+                {reclamation.etat_reclamation !== "Non traitée" &&<p><strong>Commentaire :</strong> {reclamation.commentaire ?? "—"}</p>}
             </div>
             {reclamation.etat_reclamation === "Non traitée" && !showProcessForm && role === 'ADMIN' && (
                 <div className={styles.actions}>
