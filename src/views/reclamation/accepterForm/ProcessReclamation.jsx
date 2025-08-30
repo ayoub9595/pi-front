@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./ProcessReclamation.module.css";
+import LoaderForButton from "../../../components/loaderForButton/LoaderForButton.jsx";
 
 const reclamationsStatus =['Non traitée','Acceptée','Refusée']
 
@@ -9,6 +10,7 @@ const ProcessReclamation = ({ onSubmit, onCancel }) => {
         etat_reclamation: 'Non traitée',
         commentaire: ''
     });
+    const [loading, setLoading] = useState(false);
 
     const handleChange = e => {
         setReclamation({...reclamation, [e.target.name]: e.target.value});
@@ -16,6 +18,7 @@ const ProcessReclamation = ({ onSubmit, onCancel }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         onSubmit(reclamation);
     };
 
@@ -37,8 +40,8 @@ const ProcessReclamation = ({ onSubmit, onCancel }) => {
                         name="commentaire"
                     />
                     <div className={styles.buttons}>
-                        <button disabled={reclamation.status === 'Non traitée'} className={styles.submitBtn}>
-                            Valider
+                        <button disabled={reclamation.etat_reclamation === 'Non traitée' || loading} className={styles.submitBtn}>
+                            {loading ? <LoaderForButton /> :'Valider'}
                         </button>
                         <button type="button" onClick={onCancel} className={styles.cancelBtn}>
                             Annuler
