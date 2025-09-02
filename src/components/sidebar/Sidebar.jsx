@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "./Sidebar.module.css";
 import {navigationData} from "../../utils/NavigationData.js";
 
@@ -10,6 +10,16 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
         equipement: false,
         affectation: false
     });
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 500);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 500);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
 
     const toggleSection = (section) => {
@@ -63,24 +73,43 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
         );
     };
 
+    const getNavigationData = () => {
+        const baseData = navigationData[role] || [];
+
+        if (isMobile) {
+            const userMenuItem = {
+                id: "utilisateur",
+                title: "Utilisateur",
+                isToggleable: true,
+                subLinks: [
+                    { to: "/profile", label: "Profile" },
+                    { to: "/change-password", label: "Changer mot de passe" },
+                    { to: "/logout", label: "Se deconnecter" }
+                ]
+            };
+
+            return [userMenuItem,...baseData];
+        }
+
+        return baseData;
+    };
     return (
         <div
-            className={`
-                ${styles.sidebar} 
-                ${showSideBar ? styles["show-sidebar"] : ""} 
-                ${role === "ADMIN" ? styles.admin : ""} 
-                ${role === "UTILISATEUR" ? styles.utilisateur : ""}
-            `}
+            className={`${styles.sidebar} ${
+                showSideBar ? styles["show-sidebar"] : ""
+            } ${role === "ADMIN" ? styles.admin : ""} ${
+                role === "UTILISATEUR" ? styles.utilisateur : ""
+            }`}
         >
-            <button onClick={handleCloseSideBar} className={styles["exit-button"]}>×</button>
+            <button onClick={handleCloseSideBar} className={styles["exit-button"]}>
+                ×
+            </button>
             <nav
-                className={`
-                    ${styles.nav} 
-                    ${role === "ADMIN" ? styles["admin-nav"] : ""} 
-                    ${role === "UTILISATEUR" ? styles["utilisateur-nav"] : ""}
-                `}
+                className={`${styles.nav} ${
+                    role === "ADMIN" ? styles["admin-nav"] : ""
+                } ${role === "UTILISATEUR" ? styles["utilisateur-nav"] : ""}`}
             >
-                {navigationData[role]?.map((item, index, array) =>
+                {getNavigationData().map((item, index, array) =>
                     renderNavigationItem(item, index, index === array.length - 1)
                 )}
             </nav>

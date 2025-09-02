@@ -1,11 +1,10 @@
 .sidebar {
-    z-index: 999;
+    z-index: 1000;
     position: fixed;
-    bottom: 0;
+    top: 8vh;
     left: 0;
-    height: 94vh;
-    width: 30vw;
-    margin-top: 7vh;
+    height: calc(100vh - 8vh);
+    width: 300px;
     background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
     border-right: 1px solid rgba(229, 231, 235, 0.8);
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);

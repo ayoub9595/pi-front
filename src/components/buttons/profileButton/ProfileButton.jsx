@@ -30,11 +30,11 @@ const ProfileButton = () => {
           </div>
           <div className={styles['dropdown-item']} onClick={() => console.log('Change Password clicked')}>
             <ChangeIcon />
-            Change Password
+            Changer mot de passe
           </div>
           <div className={styles['dropdown-item']} onClick={handleLogout}>
             <LogoutIcon />
-            Logout
+            Se deconnecter
           </div>
         </div>
       </div>
