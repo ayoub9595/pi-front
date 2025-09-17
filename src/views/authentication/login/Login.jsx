@@ -53,20 +53,20 @@ const Login = () => {
             <div className={styles.subcontainer}>
                 <div className={styles.logo}>
                     <img
-                        className={styles.logo}
+                        className={styles['logo-image']}
                         src="https://avatars.githubusercontent.com/u/2487851?s=280&v=4"
                         height="200px"
                         width="200px"
                         alt="Logo"
                     />
                     <div>
-                        <h1>Bienvenue sur</h1>
-                        <h1>Norsys</h1>
-                        <h1>Parc Informatique</h1>
+                        <h1 className={styles.h1}>Bienvenue sur</h1>
+                        <h1 className={styles.h1} >Norsys</h1>
+                        <h1 className={styles.h1}>Parc Informatique</h1>
                     </div>
                 </div>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    <h1>Connexion:</h1>
+                    <h1 className={styles.h1}>Connexion:</h1>
                     <label>Nom d'utilisateur:</label>
                     <input
                         className={styles.input}
