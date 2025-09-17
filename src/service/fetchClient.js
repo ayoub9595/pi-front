@@ -1,7 +1,7 @@
 import { store } from "../store/store.js";
 import { logout } from "../store/authSlice.js";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:5001";
 
 let globalNavigate = null;
 
