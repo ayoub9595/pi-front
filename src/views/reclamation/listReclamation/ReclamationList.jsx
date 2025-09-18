@@ -6,12 +6,14 @@ import ReclamationDetails from "../reclamationDetails/ReclamationDetails.jsx";
 import { toast } from "react-hot-toast";
 import Loader from "../../../components/loader/Loader.jsx";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const ReclamationList = () => {
     const [reclamations, setReclamations] = useState([]);
     const [selectedReclamation, setSelectedReclamation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const role = useSelector((state) => state.auth.role);
 
     const navigate = useNavigate();
 
@@ -69,9 +71,9 @@ const ReclamationList = () => {
             <div className={styles["no-affectations-container"]}>
                 <div className={styles.header}>
                     <h2>Liste des réclamations</h2>
-                        <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
-                            ➕
-                        </button>
+                    {role !== 'ADMIN' && <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
+                        ➕
+                    </button>}
                 </div>
                 <div className={styles["no-affectations-message"]}>
                     <p>Aucune réclamation disponible</p>
@@ -93,9 +95,9 @@ const ReclamationList = () => {
             <div className={styles["table-container"]}>
                 <div className={styles.header}>
                     <h2>Liste des réclamations</h2>
-                    <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
+                    {role !== 'ADMIN' && <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
                         ➕
-                    </button>
+                    </button>}
                 </div>
 
                 <table className={styles.table}>
