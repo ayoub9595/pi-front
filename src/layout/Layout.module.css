@@ -3,3 +3,10 @@
     padding-left: 50px;
     min-height: calc(100vh - 64px);
 }
+
+
+@media (max-width: 500px) {
+    .outlet-container {
+        padding-left: 10px;
+    }
+}
