@@ -202,7 +202,7 @@ const EditAffectation = () => {
                     value={affectation.date_debut}
                     onChange={handleInputChange}
                     required
-                    className={styles.input}
+                    className={`${styles.input} ${styles['input-date']}`}
                 />
 
                 <label>
@@ -224,7 +224,7 @@ const EditAffectation = () => {
                             name="date_fin"
                             value={affectation.date_fin}
                             onChange={handleInputChange}
-                            className={styles.input}
+                            className={`${styles.input} ${styles['input-date']}`}
                         />
                     </>
                 )}
