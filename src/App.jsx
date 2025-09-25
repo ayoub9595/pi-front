@@ -16,6 +16,8 @@ import AccessDenied from "./views/accessDenied/AccessDenied.jsx";
 import NotFound from "./views/notFound/NotFound.jsx";
 import CreateReclamation from "./views/reclamation/createReclamation/CreateReclamation.jsx";
 import ReclamationDashboard from "./views/reclamation/listReclamation/ReclamationList.jsx";
+import Profile from "./views/user/profile/Profile.jsx";
+import ChangePassword from "./views/user/changePassword/ChangePassword.jsx";
 const NavigationSetup = () => {
     const navigate = useNavigate();
 
@@ -103,6 +105,22 @@ const AppRoutes = () => {
                         element={
                             <PrivateRoute requiredRole="UTILISATEUR" useAccessDenied={true}>
                                 <CreateReclamation />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="profile"
+                        element={
+                            <PrivateRoute>
+                                <Profile />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="change-password"
+                        element={
+                            <PrivateRoute>
+                                <ChangePassword />
                             </PrivateRoute>
                         }
                     />

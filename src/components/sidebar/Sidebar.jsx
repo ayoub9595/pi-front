@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import {useEffect, useState} from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../store/authSlice.js"; // Adjust the path as needed
 import styles from "./Sidebar.module.css";
-import {navigationData} from "../../utils/NavigationData.js";
+import { navigationData } from "../../utils/NavigationData.js";
 
 const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
     const role = useSelector((state) => state.auth.role);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [openSections, setOpenSections] = useState({
         equipement: false,
         affectation: false
@@ -21,6 +26,12 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    const handleLogout = () => {
+        localStorage.clear();
+        dispatch(logout());
+        navigate("/", { replace: true });
+        handleCloseSideBar(); // Close sidebar after logout
+    };
 
     const toggleSection = (section) => {
         setOpenSections(prev => ({
@@ -28,6 +39,7 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
             [section]: !prev[section]
         }));
     };
+
 
     const renderNavigationItem = (item, index, isLast) => {
         const { id, title, icon, isToggleable, subLinks, to } = item;
@@ -52,7 +64,14 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                                     key={subIndex}
                                     to={subLink.to}
                                     className={`${styles["admin-link"]} ${styles["sub-link"]}`}
-                                    onClick={handleCloseSideBar}
+                                    onClick={(e) => {
+                                        if (subLink.label === "Se deconnecter") {
+                                            e.preventDefault();
+                                            handleLogout();
+                                        } else {
+                                            handleCloseSideBar();
+                                        }
+                                    }}
                                 >
                                     {subLink.icon} {subLink.label}
                                 </Link>
@@ -82,17 +101,18 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                 title: "Utilisateur",
                 isToggleable: true,
                 subLinks: [
-                    { to: "/profile", label: "Profile" },
-                    { to: "/change-password", label: "Changer mot de passe" },
-                    { to: "/logout", label: "Se deconnecter" }
+                    { to: "/home/profile", label: "Profile" },
+                    { to: "/home/change-password", label: "Changer mot de passe" },
+                    { to: "#", label: "Se deconnecter" } // The 'to' doesn't matter since we handle it with onClick
                 ]
             };
 
-            return [userMenuItem,...baseData];
+            return [userMenuItem, ...baseData];
         }
 
         return baseData;
     };
+
     return (
         <div
             className={`${styles.sidebar} ${

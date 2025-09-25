@@ -24,11 +24,11 @@ const ProfileButton = () => {
         </button>
 
         <div className={styles['dropdown-menu']}>
-          <div className={styles['dropdown-item']} onClick={() => console.log('Profile clicked')}>
+          <div className={styles['dropdown-item']} onClick={() => navigate("/home/profile")}>
             <DetailsIcon />
             Profile
           </div>
-          <div className={styles['dropdown-item']} onClick={() => console.log('Change Password clicked')}>
+          <div className={styles['dropdown-item']} onClick={() => navigate("/home/change-password")}>
             <ChangeIcon />
             Changer mot de passe
           </div>
