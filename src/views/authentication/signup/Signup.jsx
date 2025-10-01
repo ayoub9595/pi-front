@@ -70,18 +70,16 @@ const Signup = () => {
                     <img
                         className={styles['logo-image']}
                         src="https://avatars.githubusercontent.com/u/2487851?s=280&v=4"
-                        height="200px"
-                        width="200px"
                         alt="Logo"
                     />
-                    <div>
+                    <div className={styles.titles}>
                         <h1 className={styles.h1}>Bienvenue sur</h1>
                         <h1 className={styles.h1}>Norsys</h1>
                         <h1 className={styles.h1}>Parc Informatique</h1>
                     </div>
                 </div>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    <h1 className={styles.h1}>Inscription:</h1>
+                    <h1>Inscription:</h1>
 
                     <label>Nom:</label>
                     <input
