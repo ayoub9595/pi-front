@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { getEquipments, deleteEquipment } from "../../../service/equipmentService.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./EquipmentList.module.css";
-import EditIcon from "../../../components/icons/EditIcon.jsx";
-import DeleteIcon from "../../../components/icons/DeleteIcon.jsx";
 import ConfirmModal from "../../../components/confirmModal/CofirmModal.jsx";
-import {toast} from "react-hot-toast";
+import InfoModal from "../../../components/infoModal/InfoModal.jsx";
+import { toast } from "react-hot-toast";
 import Loader from "../../../components/loader/Loader.jsx";
-
+import EquipmentsTable from "./equipmentTable/EquipmentTable.jsx";
+import EquipmentsCards from "./equipmentCard/EquipmentCard.jsx";
+import EquipmentDetails from "../equipmentDetails/EquipmentDetails.jsx";
 
 const EquipmentsList = () => {
     const [equipments, setEquipments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
     const [showConfirm, setShowConfirm] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
+    const [selectedEquipment, setSelectedEquipment] = useState(null);
     const [selectedId, setSelectedId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchAllEquipments().catch(console.error);
@@ -26,7 +29,7 @@ const EquipmentsList = () => {
             const data = await getEquipments();
             setEquipments(data);
         } catch (err) {
-            toast.error(err.message || "Erreur lors du chargement des équipements",{duration: 2000});
+            toast.error(err.message || "Erreur lors du chargement des équipements", { duration: 2000 });
         } finally {
             setIsLoading(false);
         }
@@ -38,13 +41,23 @@ const EquipmentsList = () => {
 
     const handleDelete = (id) => {
         setSelectedId(id);
-        setShowConfirm(true)
-    }
+        setShowConfirm(true);
+    };
+
+    const handleShowDetails = (equipment) => {
+        setSelectedEquipment(equipment);
+        setShowDetails(true);
+    };
+
+    const handleCloseDetails = () => {
+        setShowDetails(false);
+        setSelectedEquipment(null);
+    };
 
     const confirmDelete = async () => {
         try {
             await deleteEquipment(selectedId);
-            toast.success('Equipement supprimé avec succès',{duration: 4000});
+            toast.success('Equipement supprimé avec succès', { duration: 4000 });
             setShowConfirm(false);
             setEquipments(prev => {
                 const newEquipments = [...prev];
@@ -53,10 +66,10 @@ const EquipmentsList = () => {
                     newEquipments.splice(index, 1);
                 }
                 return newEquipments;
-            })
+            });
             setSelectedId(null);
         } catch (err) {
-            toast.error(err.message || "Erreur lors de la suppression de l'équipement",{duration: 2000});
+            toast.error(err.message || "Erreur lors de la suppression de l'équipement", { duration: 2000 });
         }
     };
 
@@ -86,14 +99,18 @@ const EquipmentsList = () => {
     }
 
     return (
-        <div className={styles["table-container"]}>
-            {showConfirm && <ConfirmModal
-                title="Attention !"
-                message="Voulez-vous supprimer cet equipement ?"
-                handleConfirm={confirmDelete}
-                handleCancel={cancelDelete}
-            />
-            }
+        <>
+            {showConfirm && (
+                <ConfirmModal
+                    title="Attention !"
+                    message="Voulez-vous supprimer cet equipement ?"
+                    handleConfirm={confirmDelete}
+                    handleCancel={cancelDelete}
+                />
+            )}
+
+            {showDetails && selectedEquipment && ( <EquipmentDetails equipment={selectedEquipment} handleClose={handleCloseDetails} /> )}
+
             <div className={styles.header}>
                 <h2>Liste des Équipements</h2>
                 <div>
@@ -101,52 +118,19 @@ const EquipmentsList = () => {
                 </div>
             </div>
 
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Numéro de Série</th>
-                    <th>Date d'Acquisition</th>
-                    <th>Maintenance Prévue</th>
-                    <th>Actif</th>
-                    <th>Caractéristiques</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {equipments.map((eq) => (
-                    <tr key={eq.id}>
-                        <td>{eq.nom}</td>
-                        <td>{eq.description || "-"}</td>
-                        <td>{eq.numero_serie || "-"}</td>
-                        <td>{eq.date_acquisition?.split("T")[0] || "-"}</td>
-                        <td>{eq.maintenance_prevue?.split("T")[0] || "-"}</td>
-                        <td>{eq.est_actif ? "Oui" : "Non"}</td>
-                        <td>
-                            <ul style={{ paddingLeft: "16px", margin: 0 }}>
-                                {eq.caracteristiques.map((carac, index) => (
-                                    <li key={index}>
-                                        <strong>{carac.caracteristique}</strong>: {carac.valeur}
-                                    </li>
-                                ))}
-                            </ul>
-                        </td>
-                        <td>
-                            <div className={styles["action-buttons"]}>
-                                <button onClick={() => handleUpdate(eq.id)} className={`${styles["action-button"]} ${styles["edit-btn"]}`}>
-                                    <EditIcon />
-                                </button>
-                                <button onClick={() => handleDelete(eq.id)} className={`${styles["action-button"]} ${styles["delete-btn"]}`}>
-                                    <DeleteIcon />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+            <EquipmentsTable
+                equipments={equipments}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                onShowDetails={handleShowDetails}
+            />
+
+            <EquipmentsCards
+                equipments={equipments}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+            />
+        </>
     );
 };
 
