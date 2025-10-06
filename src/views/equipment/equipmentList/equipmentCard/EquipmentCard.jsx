@@ -1,7 +1,7 @@
 import styles from "./EquipmentCard.module.css";
 import EditIcon from "../../../../components/icons/EditIcon.jsx";
 import DeleteIcon from "../../../../components/icons/DeleteIcon.jsx";
-import Eye from "../../../../components/icons/Eye.jsx";
+
 
 const EquipmentsCards = ({ equipments, onUpdate, onDelete }) => {
     return (

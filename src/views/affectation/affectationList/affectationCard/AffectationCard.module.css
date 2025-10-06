@@ -1,0 +1,157 @@
+.cards-container {
+    display: none;
+}
+
+@media (max-width: 830px) {
+    .cards-container {
+        display: block;
+        padding: 15px 15px 15px 0;
+        max-width: 500px;
+    }
+    .table-container {
+        display: none;
+    }
+}
+
+.card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #5dade2;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.card-body {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    border-left: 4px solid #5dade2;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.card-field:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    transform: translateX(4px);
+}
+
+.card-label {
+    font-weight: 600;
+    color: #5dade2;
+    font-size: 0.9rem;
+    min-width: 130px;
+}
+
+.card-value {
+    color: #2c3e50;
+    font-size: 0.95rem;
+    text-align: right;
+    font-weight: 500;
+}
+
+.card-actions {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.card-actions .action-button {
+    min-width: 45px;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card-actions .action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-actions .action-button:active {
+    transform: translateY(0);
+}
+
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background-color: #d5f4e6;
+    color: #27ae60;
+}
+
+.status-badge.inactive {
+    background-color: #fadbd8;
+    color: #e74c3c;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.show-btn {
+    background-color: lightgreen;
+    color: white;
+}
+
+.edit-btn {
+    background-color: orange;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}

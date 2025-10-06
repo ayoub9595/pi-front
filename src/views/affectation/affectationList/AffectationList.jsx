@@ -3,13 +3,12 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { getAffectations, deleteAffectation } from "../../../service/AffectationService.js";
-import EditIcon from "../../../components/icons/EditIcon.jsx";
-import DeleteIcon from "../../../components/icons/DeleteIcon.jsx";
-import Eye from "../../../components/icons/Eye.jsx";
 import ConfirmModal from "../../../components/confirmModal/CofirmModal.jsx";
 import Loader from "../../../components/loader/Loader.jsx";
 import styles from "./AffectationList.module.css";
 import AffectationDetails from "../affectationDetails/AffectationDetails.jsx";
+import AffectationTable from "./affectationTable/AffectationTable.jsx";
+import AffectationCard from "./affectationCard/AffectationCard.jsx";
 
 const AffectationList = () => {
     const [affectations, setAffectations] = useState([]);
@@ -104,7 +103,7 @@ const AffectationList = () => {
     }
 
     return (
-        <div className={styles["table-container"]}>
+        <div>
             {showConfirm && (
                 <ConfirmModal
                     title="Attention !"
@@ -126,56 +125,17 @@ const AffectationList = () => {
                     </button>
                 )}
             </div>
-
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    <th>Équipement</th>
-                    <th>Utilisateur</th>
-                    <th>Date Début</th>
-                    <th>Date Fin</th>
-                    <th>Déterminé</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {affectations.map((a) => (
-                    <tr key={a.id}>
-                        <td>{a.equipement.nom || "-"}</td>
-                        <td>{a.utilisateur.nom || "-"}</td>
-                        <td>{a.date_debut?.split("T")[0] || "-"}</td>
-                        <td>{a.date_fin?.split("T")[0] || "-"}</td>
-                        <td>{a.determine ? "Oui" : "Non"}</td>
-                        <td>
-                            <div className={styles["action-buttons"]}>
-                                <button
-                                    onClick={() => handleShow(a.id)}
-                                    className={`${styles["action-button"]} ${styles["show-btn"]}`}
-                                >
-                                    <Eye size={26} />
-                                </button>
-                                {role === "ADMIN" && (
-                                    <>
-                                        <button
-                                            onClick={() => handleUpdate(a.id)}
-                                            className={`${styles["action-button"]} ${styles["edit-btn"]}`}
-                                        >
-                                            <EditIcon />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(a.id)}
-                                            className={`${styles["action-button"]} ${styles["delete-btn"]}`}
-                                        >
-                                            <DeleteIcon />
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <AffectationTable affectations={affectations}
+                              handleShow={handleShow}
+                              handleUpdate={handleUpdate}
+                              handleDelete={handleDelete}
+                              role={role}
+            />
+            <AffectationCard affectations={affectations}
+                             onShow={handleShow}
+                             onUpdate={handleUpdate}
+                             onDelete={handleDelete}
+            />
         </div>
     );
 };

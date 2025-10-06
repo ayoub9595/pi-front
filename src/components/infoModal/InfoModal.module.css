@@ -18,6 +18,8 @@
     width: 50vw;
     max-height: 90vh;
     overflow-y: scroll;
+    min-width: 300px;
+    max-width: 500px;
 }
 
 .title {
@@ -30,4 +32,10 @@
 }
 .exit {
     cursor: pointer;
+}
+
+@media (max-width: 650px) {
+    .title {
+        font-size: 22px;
+    }
 }
