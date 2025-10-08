@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import {getReclamations, updateReclamation} from "../../../service/ReclamationService.js";
-import Eye from "../../../components/icons/Eye.jsx";
 import styles from "./ReclamationList.module.css";
 import ReclamationDetails from "../reclamationDetails/ReclamationDetails.jsx";
 import { toast } from "react-hot-toast";
 import Loader from "../../../components/loader/Loader.jsx";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
+import ReclamationTable from "./reclamationTable/ReclamationTable.jsx";
+import ReclamationCard from "./reclamationCard/ReclamationCard.jsx";
 
 const ReclamationList = () => {
     const [reclamations, setReclamations] = useState([]);
@@ -92,47 +93,14 @@ const ReclamationList = () => {
                 />
             )}
 
-            <div className={styles["table-container"]}>
-                <div className={styles.header}>
-                    <h2>Liste des réclamations</h2>
-                    {role !== 'ADMIN' && <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
-                        ➕
-                    </button>}
-                </div>
-
-                <table className={styles.table}>
-                    <thead>
-                    <tr>
-                        <th>Nom Utilisateur</th>
-                        <th>Équipement</th>
-                        <th>Date Réclamation</th>
-                        <th>Description</th>
-                        <th>Etat de la reclamation</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {reclamations.map((rec) => (
-                        <tr key={rec.id}>
-                            <td>{rec.utilisateur?.nom ?? "—"}</td>
-                            <td>{rec.equipement?.nom ?? "—"}</td>
-                            <td>{rec.date_reclamation ? new Date(rec.date_reclamation).toISOString().split("T")[0] : "—"}</td>
-                            <td>{rec.description ?? "—"}</td>
-                            <td>{rec.etat_reclamation ?? ""}</td>
-                            <td>
-                                <button
-                                    onClick={() => handleShowDetails(rec)}
-                                    className={`${styles["action-button"]} ${styles["show-btn"]}`}
-                                    title="Voir détails"
-                                >
-                                    <Eye size={24} />
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+            <div className={styles.header}>
+                <h2>Liste des réclamations</h2>
+                {role !== 'ADMIN' && <button className={styles["add-button"]} onClick={() => navigate("/home/reclamations/create")}>
+                    ➕
+                </button>}
             </div>
+            <ReclamationTable reclamations={reclamations} handleShowDetails={handleShowDetails} />
+            <ReclamationCard reclamations={reclamations} onShow={handleShowDetails} />
         </>
     );
 };
