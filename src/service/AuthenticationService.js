@@ -1,4 +1,5 @@
-import { fetchClient } from "./fetchClient.js";
+import {fetchClient} from "./fetchClient.js";
+
 export const loginUser = async ({ email, motDePasse }) => {
     try {
         const data = await fetchClient("/auth/login", "POST", {
@@ -26,7 +27,7 @@ export const signupUser = async ({
                                      role = "UTILISATEUR",
                                  }) => {
     try {
-        const data = await fetchClient("/auth/signup", "POST", {
+        return await fetchClient("/auth/signup", "POST", {
             nom,
             email,
             cin,
@@ -34,8 +35,15 @@ export const signupUser = async ({
             mot_de_passe: motDePasse,
             role,
         });
-        return data;
     } catch (error) {
         throw new Error(error.message || "Erreur lors de l'inscription");
     }
 };
+
+export const changePassword = async ({ancien_mot_de_passe,nouveau_mot_de_passe}) => {
+    try {
+        return await fetchClient("/auth/change-password", "PUT", {ancien_mot_de_passe,nouveau_mot_de_passe})
+    }catch (error) {
+        throw new Error(error.message || "Une erreur est survenue");
+    }
+}
