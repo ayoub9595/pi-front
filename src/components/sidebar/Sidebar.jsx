@@ -8,6 +8,7 @@ import { navigationData } from "../../utils/NavigationData.js";
 
 const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
     const role = useSelector((state) => state.auth.role);
+    const nom = useSelector((state) => state.auth.nom);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -55,15 +56,15 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                             <span className={styles["section-icon"]}>{icon}</span>
                             <span>{title}</span>
                             <span className={`${styles["toggle-arrow"]} ${openSections[id] ? styles["toggle-arrow-open"] : ""}`}>
-                                ▼
-                            </span>
+                            ▼
+                        </span>
                         </button>
                         <div className={`${styles["section-content"]} ${openSections[id] ? styles["section-content-open"] : ""}`}>
                             {subLinks.map((subLink, subIndex) => (
                                 <Link
                                     key={subIndex}
                                     to={subLink.to}
-                                    className={`${styles["admin-link"]} ${styles["sub-link"]}`}
+                                    className={`${styles["admin-link"]} ${styles["sub-link"]} ${subLink.showRoleBadge ? styles["profile-sub-link"] : ""}`}
                                     onClick={(e) => {
                                         if (subLink.label === "Se deconnecter") {
                                             e.preventDefault();
@@ -73,7 +74,18 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                                         }
                                     }}
                                 >
-                                    {subLink.icon} {subLink.label}
+                                    {subLink.showRoleBadge ? (
+                                        <div className={styles["profile-link-content"]}>
+                                            <span className={styles["profile-name"]}>{subLink.label}</span>
+                                            <span className={`${styles["role-badge"]} ${styles[role?.toLowerCase()]}`}>
+                                            {role === 'ADMIN' ? 'Admin' : 'Utilisateur'}
+                                        </span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {subLink.icon} {subLink.label}
+                                        </>
+                                    )}
                                 </Link>
                             ))}
                         </div>
@@ -101,7 +113,7 @@ const Sidebar = ({ showSideBar, handleCloseSideBar }) => {
                 title: "Utilisateur",
                 isToggleable: true,
                 subLinks: [
-                    { to: "/home/profile", label: "Profile" },
+                    { to: "/home/profile", label: nom || 'Utilisateur',showRoleBadge: true },
                     { to: "/home/change-password", label: "Changer mot de passe" },
                     { to: "#", label: "Se deconnecter" } // The 'to' doesn't matter since we handle it with onClick
                 ]
