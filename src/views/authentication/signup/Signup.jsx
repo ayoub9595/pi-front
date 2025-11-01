@@ -46,9 +46,9 @@ const Signup = () => {
             localStorage.setItem("access_token", data.access_token);
             localStorage.setItem("refresh_token", data.refresh_token);
 
-            const { sub, email, role } = jwtDecode(data.access_token);
+            const { sub, email, role, nom } = jwtDecode(data.access_token);
 
-            dispatch(setCredentials({ id: sub, email, role }));
+            dispatch(setCredentials({ id: sub, email, role, nom }));
 
             if (role === "ADMIN") {
                 navigate("/home/equipements");

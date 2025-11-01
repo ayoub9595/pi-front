@@ -6,7 +6,6 @@ import { loginUser } from "../../../service/AuthenticationService.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../store/authSlice.js";
 import { toast, Toaster } from "react-hot-toast";
-import { getCurrentUserRole } from "../../../routerUtils/authUtils.js";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -25,9 +24,9 @@ const Login = () => {
             localStorage.setItem("access_token", access_token);
             localStorage.setItem("refresh_token", refresh_token);
 
-            const { sub, email: userEmail, role } = jwtDecode(access_token);
+            const { sub, email: userEmail, role, nom } = jwtDecode(access_token);
 
-            dispatch(setCredentials({ id: sub, email: userEmail, role }));
+            dispatch(setCredentials({ id: sub, email: userEmail, role, nom }));
 
             if (role === "ADMIN") {
                 navigate("/home/equipements", { replace: true });

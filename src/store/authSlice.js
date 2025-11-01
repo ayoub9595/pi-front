@@ -25,6 +25,7 @@ const initialState = persistedState || {
     id: null,
     email: null,
     role: null,
+    nom: null,
 };
 
 const authSlice = createSlice({
@@ -32,15 +33,17 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, action) => {
-            const { id, email, role } = action.payload;
+            const { id, email, role,nom } = action.payload;
             state.role = role;
             state.id = id;
             state.email = email;
+            state.nom = nom;
         },
         logout: (state) => {
             state.id = null;
             state.email = null;
             state.role = null;
+            state.nom = null;
         },
     },
 });
@@ -54,6 +57,7 @@ export const authMiddleware = (store) => (next) => (action) => {
             id: authState.id,
             email: authState.email,
             role: authState.role,
+            nom: authState.nom,
         });
     }
 
