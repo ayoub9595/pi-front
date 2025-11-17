@@ -3,11 +3,13 @@ import {useEffect, useState} from "react";
 import {getUtilisateur, updateUtilisateur} from "../../../service/UtilisateurService.js";
 import {useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
+import LoaderForButton from "../../../components/loaderForButton/LoaderForButton.jsx";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
     const [userToUpdate, setUserToUpdate] = useState(null);
     const [showModify, setShowModify] = useState(false);
+    const [loading, setLoading] = useState(false);
     const {id} = useSelector((state) => state.auth);
 
     useEffect(() => {
@@ -28,12 +30,14 @@ const Profile = () => {
     }
 
     const handleSubmit = async (e) => {
+        setLoading(true);
         e.preventDefault();
         try {
             const successUser = await updateUtilisateur(userToUpdate);
             setUser(successUser);
             setShowModify(false);
             toast.success("Vos données ont été modifié avec succès")
+            setLoading(false);
         }catch(err) {
             toast.error(err.message || "Erreur inattendue lors de l'ajout.",{duration: 2000});
         }
@@ -60,7 +64,7 @@ const Profile = () => {
                         <span>{user ? user.role.toUpperCase()  :'-'}</span>
                     </div>
                 </div>
-                <button className={styles.button} onClick={() => setShowModify(true)}>Modifier</button>
+                {!showModify && <button className={styles.button} onClick={() => setShowModify(true)}>Modifier</button>}
             </div>
 
             {showModify && <div className={styles['modification-section']}>
@@ -98,7 +102,10 @@ const Profile = () => {
                         onChange={handleUserChange}
                         required
                     />
-                    <button className={styles.button}>Sauvegarder</button>
+                    <div className={styles['action-buttons']}>
+                        <button className={styles.button} disabled={loading}>{loading ? <LoaderForButton /> :'Sauvegarder'}</button>
+                        <button className={styles.button} disabled={loading} onClick={() => setShowModify(false)}>Annuler</button>
+                    </div>
                 </form>
             </div> }
 

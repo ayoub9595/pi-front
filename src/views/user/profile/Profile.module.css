@@ -48,6 +48,11 @@
     gap: 20px;
 }
 
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
 .button {
     cursor: pointer;
     height: 35px;
@@ -60,6 +65,10 @@
     font-weight: 600;
     transition: background-color 0.3s ease;
     margin-top: 20px;
+}
+
+.button:disabled {
+    cursor: not-allowed;
 }
 
 .modification-section .container {
