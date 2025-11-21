@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
-import {createReclamation} from "../../../service/reclamationService.js";
+import {createReclamation} from "../../../service/ReclamationService.js";
 import styles from './CreateReclamation.module.css';
 import {getEquipementsActifsByUtilisateurId} from "../../../service/equipmentService.js";
 import Loader from "../../../components/loader/Loader.jsx";

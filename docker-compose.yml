@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react-app
+    platform: linux/arm64/v8
+    ports:
+      - "3000:80"
+    restart: unless-stopped
