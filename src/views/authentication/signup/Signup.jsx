@@ -2,23 +2,23 @@ import styles from "./Signup.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signupUser } from "../../../service/AuthenticationService.js";
-import {jwtDecode} from "jwt-decode";
-import { setCredentials } from "../../../store/authSlice.js";
-import { useDispatch } from "react-redux";
+import LoaderForButton from "../../../components/loaderForButton/LoaderForButton.jsx";
+
 import { toast, Toaster } from "react-hot-toast";
 
 const Signup = () => {
-    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         nom: "",
         email: "",
         cin: "",
         telephone: "",
-        motDePasse: "",
-        confirmMotDePasse: ""
     });
 
-    const navigate = useNavigate();
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,33 +33,24 @@ const Signup = () => {
             return;
         }
 
+        setIsLoading(true);
         try {
             const data = await signupUser({
                 nom: formData.nom,
                 email: formData.email,
                 cin: formData.cin,
-                telephone: formData.telephone,
-                motDePasse: formData.motDePasse,
-                role: formData.role,
+                telephone: formData.telephone
             });
 
-            localStorage.setItem("access_token", data.access_token);
-            localStorage.setItem("refresh_token", data.refresh_token);
-
-            const { sub, email, role, nom } = jwtDecode(data.access_token);
-
-            dispatch(setCredentials({ id: sub, email, role, nom }));
-
-            if (role === "ADMIN") {
-                navigate("/home/equipements");
-            } else if (role === "UTILISATEUR") {
-                navigate("/home/affectations");
-            } else {
-                toast.error("Rôle inconnu, accès refusé", { duration: 2000 });
-            }
+            toast.success(data.msg, { duration: 5000 })
+            setIsLoading(false);
+            setTimeout(() => {
+                navigate("/");
+            }, 5000)
 
         } catch (err) {
             toast.error(err.message || "Une erreur est survenue", { duration: 2000 });
+            setIsLoading(false);
         }
     };
 
@@ -121,28 +112,8 @@ const Signup = () => {
                         required
                     />
 
-                    <label>Mot de passe:</label>
-                    <input
-                        className={styles.input}
-                        type="password"
-                        name="motDePasse"
-                        value={formData.motDePasse}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <label>Confirmation du mot de passe:</label>
-                    <input
-                        className={styles.input}
-                        type="password"
-                        name="confirmMotDePasse"
-                        value={formData.confirmMotDePasse}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <button className={styles.button} type="submit">
-                        S'inscrire
+                    <button className={styles.button} type="submit" disabled={isLoading}>
+                        {isLoading ? <LoaderForButton /> : "S'inscrire"}
                     </button>
 
                     <span>

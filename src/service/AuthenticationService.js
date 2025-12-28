@@ -23,7 +23,6 @@ export const signupUser = async ({
                                      email,
                                      cin,
                                      telephone,
-                                     motDePasse,
                                      role = "UTILISATEUR",
                                  }) => {
     try {
@@ -32,7 +31,6 @@ export const signupUser = async ({
             email,
             cin,
             telephone,
-            mot_de_passe: motDePasse,
             role,
         });
     } catch (error) {
