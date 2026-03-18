@@ -1,12 +1,62 @@
-# React + Vite
+# PI Front (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Version](https://img.shields.io/badge/version-0.0.0-blue)
+![License](https://img.shields.io/badge/license-UNLICENSED-red)
+![React](https://img.shields.io/badge/react-19.1.0-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-7.0.0-646cff?logo=vite)
 
-Currently, two official plugins are available:
+## 📌 Présentation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Ce dépôt contient le frontend de l'application **PI** (Gestion d'équipement / réclamations / affectations) développé avec **React + Vite**. Il fournit une interface utilisateur moderne, une gestion de l'état avec **Redux Toolkit**, et une navigation protégée (routes publiques/privées).
 
-## Expanding the ESLint configuration
+## 🚀 Prérequis
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v18+ recommandé)
+- npm (ou yarn/pnpm selon votre préférence)
+
+## 🛠️ Installation
+
+```bash
+npm install
+```
+
+## ▶️ Scripts utiles
+
+- `npm run dev` - démarre le serveur de développement (HMR)
+- `npm run build` - génère le build de production dans `dist/`
+- `npm run preview` - prévisualise le build de production
+- `npm run lint` - analyse le code avec ESLint
+
+## 📁 Structure du projet
+
+- `src/` – code source React
+  - `components/` – composants réutilisables (boutons, modales, navbar, etc.)
+  - `views/` – pages et écrans (login, list, détails, formulaires, etc.)
+  - `routerUtils/` – routes publiques/privées et utilitaires d'authentification
+  - `service/` – services d'accès API
+  - `store/` – configuration Redux (slice + store)
+  - `utils/` – helpers et données statiques
+  - `layout/` – composants de layout (Sidebar, Navbar, etc.)
+
+## 🔐 Authentification et routes
+
+Le projet utilise une couche de protection des routes (public/private) basée sur un token JWT stocké (par ex. `localStorage`). Les utilitaires d'authentification se trouvent dans `src/routerUtils/authUtils.js`.
+
+## 🧩 Technologies principales
+
+- React 19
+- Vite 7
+- Redux Toolkit
+- React Router DOM 7
+- ESLint (avec règles de base pour React)
+
+## 💡 Conseils
+
+- Si vous utilisez un proxy ou une API distante, adaptez `src/service/fetchClient.js` pour gérer l'URL de base et l'ajout du token JWT.
+- Ajoutez des tests unitaires / d'intégration si vous souhaitez renforcer la couverture avant de pousser en production.
+
+---
+
+### 📝 Licence
+
+Ce projet est **UNLICENSED**. Pour un usage personnel / en interne uniquement.
