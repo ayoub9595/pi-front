@@ -49,7 +49,7 @@
 ```bash
 # Cloner le dépôt
 git clone https://github.com/ayoub9595/pi-back
-cd pi-front
+cd pi-back
 
 # Installer les dépendances
 npm install
